@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+  
+<html>
+<head>
+      <title>Spring Boot - POST-GET AJAX Example</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="/bootstrap-3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+
+<div class="container">
+
+  
+  
+  <div id="body" th:fragment="body">
+  	<h1>
+  		<div>
+			<label >Track :</label>
+  			<label th:text="${trackInProgress.trackName}"/>
+  			<label th:if="${!#strings.isEmpty(trackInProgress.trackVariation)}"> / </label>
+  			<label th:text="${trackInProgress.trackVariation}"/>  			
+		</div>
+  			
+  		<div>
+			<label >Car name :</label>
+  			<label th:text="${trackInProgress.carName}"/>
+  			<label th:if="${!#strings.isEmpty(trackInProgress.carClass)}"> / </label>
+  			<label th:text="${trackInProgress.carClass}"/> 
+		</div>		
+		
+  		<div>
+			<label >Record lap :</label>
+  			<label th:text="${trackInProgress.recordLap}"/> 
+		</div>		
+		<div th:if="${!#strings.isEmpty(trackInProgress.recordLap)
+		}"> 
+			<label >By :</label>
+  			<label th:text="${trackInProgress.user}"/> 
+			<label >On :</label>
+  			<label th:text="${trackInProgress.dateRecord}"/>   			
+		</div>	
+	</h1>
+  </div>
+  
+</div>
+
+<script src="/js/jquery-3.2.1.min.js"></script>    
+<script src="/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/pcars2udp.js"></script>
+</body>
+</html>
