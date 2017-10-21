@@ -13,7 +13,6 @@ import com.laurent.pcars2udp.adapter.ParticipantInfoAdapter;
 import com.laurent.pcars2udp.adapter.TelemetryDataAdapter;
 import com.laurent.pcars2udp.dto.ParticipantInfo;
 import com.laurent.pcars2udp.dto.TelemetryData;
-import com.laurent.pcars2udp.util.LogUtils;
 
 @Component
 public class UDPThread {
@@ -31,9 +30,6 @@ public class UDPThread {
 
 	@Autowired
 	private TelemetryData telemetryData;
-
-	@Autowired
-	private LogUtils logUtils;
 
 	@Async
 	public void run() {
@@ -70,6 +66,7 @@ public class UDPThread {
 				packet.setLength(buffer.length);
 
 			}
+
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

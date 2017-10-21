@@ -25,6 +25,15 @@ public class LapRecord {
 	@Column
 	private LocalDateTime recordDate;
 
+	@Column
+	LocalTime recordSectorOne;
+
+	@Column
+	LocalTime recordSectorTwo;
+
+	@Column
+	LocalTime recordSectorThree;
+
 	public LocalTime getRecordLap() {
 		return recordLap;
 	}
@@ -64,4 +73,29 @@ public class LapRecord {
 	public void setClassName(String className) {
 		this.className = className;
 	}
+
+	public LocalTime getRecordSectorOne() {
+		return recordSectorOne;
+	}
+
+	public void setRecordSectorOne(LocalTime recordSectorOne) {
+		this.recordSectorOne = recordSectorOne;
+	}
+
+	public LocalTime getRecordSectorTwo() {
+		return recordSectorTwo;
+	}
+
+	public void setRecordSectorTwo(LocalTime recordSectorTwo) {
+		this.recordSectorTwo = recordSectorTwo;
+	}
+
+	public LocalTime getRecordSectorThree() {
+		return recordSectorThree;
+	}
+
+	public void setRecordSectorThree(LocalTime recordSectorThree) {
+		this.recordSectorThree = recordSectorThree;
+	}
+
 }

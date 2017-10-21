@@ -5,15 +5,11 @@ import org.springframework.stereotype.Component;
 
 import com.laurent.pcars2udp.dto.TelemetryData;
 import com.laurent.pcars2udp.util.BufferByteUtils;
-import com.laurent.pcars2udp.util.LogUtils;
 
 @Component
 public class TelemetryDataAdapter {
 	@Autowired
 	private BufferByteUtils bufferByteUtils;
-
-	@Autowired
-	private LogUtils logUtils;
 
 	public TelemetryData getTelemetryData(TelemetryData telemetryData, byte[] data) {
 
@@ -23,6 +19,9 @@ public class TelemetryDataAdapter {
 		telemetryData.setBestLapTime(bufferByteUtils.getFloat(data, 12, 32));
 		telemetryData.setLastLapTime(bufferByteUtils.getFloat(data, 16, 32));
 		telemetryData.setCurrentTime(bufferByteUtils.getFloat(data, 20, 32));
+		telemetryData.setFastestSector1Time(bufferByteUtils.getFloat(data, 60, 32));
+		telemetryData.setFastestSector2Time(bufferByteUtils.getFloat(data, 64, 32));
+		telemetryData.setFastestSector3Time(bufferByteUtils.getFloat(data, 68, 32));
 
 		return telemetryData;
 	}

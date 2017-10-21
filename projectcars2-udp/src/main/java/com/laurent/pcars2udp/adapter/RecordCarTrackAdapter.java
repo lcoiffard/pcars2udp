@@ -20,6 +20,9 @@ public class RecordCarTrackAdapter {
 		recordCarTrack.setUser(lapRecord.getUserPs4());
 		recordCarTrack.setRecordLap(lapRecord.getRecordLap());
 		recordCarTrack.setDateRecord(lapRecord.getRecordDate());
+		recordCarTrack.setRecordSectorOne(lapRecord.getRecordSectorOne());
+		recordCarTrack.setRecordSectorTwo(lapRecord.getRecordSectorTwo());
+		recordCarTrack.setRecordSectorThree(lapRecord.getRecordSectorThree());
 		return recordCarTrack;
 	}
 
@@ -33,6 +36,9 @@ public class RecordCarTrackAdapter {
 		lapRecord.setClassName(recordCarTrack.getCarClass());
 		lapRecord.setRecordDate(recordCarTrack.getDateRecord());
 		lapRecord.setRecordLap(recordCarTrack.getRecordLap());
+		lapRecord.setRecordSectorOne(recordCarTrack.getRecordSectorOne());
+		lapRecord.setRecordSectorTwo(recordCarTrack.getRecordSectorTwo());
+		lapRecord.setRecordSectorThree(recordCarTrack.getRecordSectorThree());
 		return lapRecord;
 
 	}

@@ -67,6 +67,16 @@ public class SaveBestLapThread {
 					recordCarTrack.setUser(participantInfo.getName().get(0));
 					recordCarTrack.setDateRecord(LocalDateTime.now());
 					recordCarTrack.setRecordLap(bestLapSession);
+					LocalTime recordSectorOne = LocalTime
+							.ofNanoOfDay((long) (telemetryData.getFastestSector1Time() * 1000000000));
+					LocalTime recordSectorTwo = LocalTime
+							.ofNanoOfDay((long) (telemetryData.getFastestSector2Time() * 1000000000));
+					LocalTime recordSectorThree = LocalTime
+							.ofNanoOfDay((long) (telemetryData.getFastestSector3Time() * 1000000000));
+					recordCarTrack.setRecordSectorOne(recordSectorOne);
+					recordCarTrack.setRecordSectorTwo(recordSectorTwo);
+					recordCarTrack.setRecordSectorThree(recordSectorThree);
+
 					lapRecordRepo.save(recordCarTrackAdapter.convertToLapRecord(recordCarTrack));
 					logUtils.println("New record save : " + recordCarTrack.getRecordLap());
 				}
@@ -80,6 +90,9 @@ public class SaveBestLapThread {
 			recordCarTrack.setUser(null);
 			recordCarTrack.setDateRecord(null);
 			recordCarTrack.setRecordLap(null);
+			recordCarTrack.setRecordSectorOne(null);
+			recordCarTrack.setRecordSectorTwo(null);
+			recordCarTrack.setRecordSectorThree(null);
 		}
 
 	}

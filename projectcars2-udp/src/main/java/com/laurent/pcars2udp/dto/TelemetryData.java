@@ -12,6 +12,9 @@ public class TelemetryData {
 	private float bestLapTime;
 	private float lastLapTime;
 	private float currentTime;
+	private float fastestSector1Time;
+	private float fastestSector2Time;
+	private float fastestSector3Time;
 
 	public Integer getBuildVersionNumber() {
 		return buildVersionNumber;
@@ -59,6 +62,30 @@ public class TelemetryData {
 
 	public void setGameSessionState(Integer gameSessionState) {
 		this.gameSessionState = gameSessionState;
+	}
+
+	public float getFastestSector1Time() {
+		return fastestSector1Time;
+	}
+
+	public void setFastestSector1Time(float fastestSector1Time) {
+		this.fastestSector1Time = fastestSector1Time;
+	}
+
+	public float getFastestSector2Time() {
+		return fastestSector2Time;
+	}
+
+	public void setFastestSector2Time(float fastestSector2Time) {
+		this.fastestSector2Time = fastestSector2Time;
+	}
+
+	public float getFastestSector3Time() {
+		return fastestSector3Time;
+	}
+
+	public void setFastestSector3Time(float fastestSector3Time) {
+		this.fastestSector3Time = fastestSector3Time;
 	}
 
 }
