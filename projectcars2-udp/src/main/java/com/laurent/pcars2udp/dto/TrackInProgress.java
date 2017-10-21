@@ -15,6 +15,8 @@ public class TrackInProgress {
 	private LocalTime recordCar;
 	private LocalTime recordClass;
 	private LocalTime recordTrack;
+	private String recordClassCar;
+	private String recordTrackCar;
 
 	public String getTrackName() {
 		return trackName;
@@ -103,10 +105,26 @@ public class TrackInProgress {
 		String diffString = null;
 		if (time != null && recordToBeaten != null) {
 			Duration diff = Duration.between(recordToBeaten, time);
-			diffString = DurationFormatUtils.formatDuration(Math.abs(diff.toMillis()), "mm:ss:SSS")
-					+ (diff.isNegative() ? " -" : " +");
+			diffString = (diff.isNegative() ? " - " : " + ")
+					+ DurationFormatUtils.formatDuration(Math.abs(diff.toMillis()), "mm:ss:SSS");
 		}
 		return diffString;
+	}
+
+	public String getRecordClassCar() {
+		return recordClassCar;
+	}
+
+	public void setRecordClassCar(String recordClassCar) {
+		this.recordClassCar = recordClassCar;
+	}
+
+	public String getRecordTrackCar() {
+		return recordTrackCar;
+	}
+
+	public void setRecordTrackCar(String recordTrackCar) {
+		this.recordTrackCar = recordTrackCar;
 	}
 
 }

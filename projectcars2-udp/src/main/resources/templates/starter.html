@@ -127,7 +127,8 @@ desired effect
             <div class="info-box-content">
               <span class="info-box-text">Record car</span>
               <span class="info-box-number"  th:text="${trackInProgress.recordCar} ? ${#temporals.format(trackInProgress.recordCar,'mm:ss:SSS')} : '--:--:---'"/>
-              <span class="info-box-number"  th:text="${trackInProgress.diffRecordCar}"/>
+              <span class="badge bg-red"  th:if="!${trackInProgress.recordCarBeaten}" th:text="${trackInProgress.diffRecordCar}"/>
+              <span class="badge bg-green"  th:if="${trackInProgress.recordCarBeaten}" th:text="${trackInProgress.diffRecordCar}"/>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -138,9 +139,11 @@ desired effect
             <span class="info-box-icon bg-green" th:if="${trackInProgress.recordClassBeaten}"><i class="fa fa-thumbs-o-up"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Record class</span>
+              <span class="info-box-text" th:if="!${trackInProgress.recordClassCar}" >Record class</span>
+              <span class="info-box-text" th:if="${trackInProgress.recordClassCar}" th:text="${'Record class (' + trackInProgress.recordClassCar +')'}"/>
               <span class="info-box-number"  th:text="${trackInProgress.recordClass} ? ${#temporals.format(trackInProgress.recordClass,'mm:ss:SSS')} : '--:--:---'"/>
-              <span class="info-box-number"  th:text="${trackInProgress.diffRecordClass}"/>
+              <span class="badge bg-red"  th:if="!${trackInProgress.recordClassBeaten}" th:text="${trackInProgress.diffRecordClass}"/>
+              <span class="badge bg-green"  th:if="${trackInProgress.recordClassBeaten}" th:text="${trackInProgress.diffRecordClass}"/>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -151,9 +154,11 @@ desired effect
             <span class="info-box-icon bg-green" th:if="${trackInProgress.recordTrackBeaten}"><i class="fa fa-thumbs-o-up"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Record track</span>
+              <span class="info-box-text" th:if="!${trackInProgress.recordTrackCar}" >Record track</span>
+              <span class="info-box-text" th:if="${trackInProgress.recordTrackCar}" th:text="${'Record track (' + trackInProgress.recordTrackCar +')'}"/>
               <span class="info-box-number"  th:text="${trackInProgress.recordTrack} ? ${#temporals.format(trackInProgress.recordTrack,'mm:ss:SSS')} : '--:--:---'"/>
-              <span class="info-box-number"  th:text="${trackInProgress.diffRecordTrack}"/>
+              <span class="badge bg-red"  th:if="!${trackInProgress.recordTrackBeaten}" th:text="${trackInProgress.diffRecordTrack}"/>
+              <span class="badge bg-green"  th:if="${trackInProgress.recordTrackBeaten}" th:text="${trackInProgress.diffRecordTrack}"/>
             </div>
             <!-- /.info-box-content -->
           </div>

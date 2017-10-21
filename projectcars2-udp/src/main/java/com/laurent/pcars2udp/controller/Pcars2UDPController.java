@@ -42,6 +42,19 @@ public class Pcars2UDPController {
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
 	public String refresh(Model model) {
 		refreshTrackInProgress();
+		// Util for mock
+
+		/*
+		 * trackInProgress.setCarName("test car");
+		 * trackInProgress.setTrackName("test track");
+		 * trackInProgress.setRecordSession(LocalTime.of(0, 1, 55,
+		 * 76543210).minusSeconds(i++)); trackInProgress.setRecordCar(LocalTime.of(0, 1,
+		 * 52, 876543210)); trackInProgress.setRecordClass(LocalTime.of(0, 1, 51,
+		 * 776543210)); trackInProgress.setRecordTrack(LocalTime.of(0, 1, 50,
+		 * 676543210)); trackInProgress.setRecordClassCar("Mazda");
+		 * trackInProgress.setRecordTrackCar("Mercedes / GTO");
+		 */
+
 		model.addAttribute(trackInProgress);
 		return "starter :: data";
 	}
@@ -55,6 +68,9 @@ public class Pcars2UDPController {
 			trackInProgress.setRecordCar(null);
 			trackInProgress.setRecordClass(null);
 			trackInProgress.setRecordTrack(null);
+			trackInProgress.setRecordClassCar(null);
+			trackInProgress.setRecordTrackCar(null);
+
 		} else {
 			trackInProgress.setTrackName(participantInfo.getTrackLocation());
 			if (!StringUtils.isEmpty(participantInfo.getTrackVariation())) {
@@ -93,6 +109,7 @@ public class Pcars2UDPController {
 									participantInfo.getTrackVariation());
 					if (lapRecordClass != null) {
 						trackInProgress.setRecordClass(lapRecordClass.getRecordLap());
+						trackInProgress.setRecordClassCar(lapRecordClass.getLapKey().getCarName());
 					}
 				}
 
@@ -102,6 +119,11 @@ public class Pcars2UDPController {
 									participantInfo.getTrackLocation(), participantInfo.getTrackVariation());
 					if (lapRecordTrack != null) {
 						trackInProgress.setRecordTrack(lapRecordTrack.getRecordLap());
+						trackInProgress.setRecordTrackCar(lapRecordTrack.getLapKey().getCarName());
+						if (!StringUtils.isEmpty(lapRecordTrack.getClassName())) {
+							trackInProgress.setRecordTrackCar(
+									trackInProgress.getRecordTrackCar() + " / " + lapRecordTrack.getClassName());
+						}
 					}
 				}
 
@@ -110,6 +132,8 @@ public class Pcars2UDPController {
 				trackInProgress.setRecordCar(null);
 				trackInProgress.setRecordClass(null);
 				trackInProgress.setRecordTrack(null);
+				trackInProgress.setRecordClassCar(null);
+				trackInProgress.setRecordTrackCar(null);
 			}
 
 		}
