@@ -35,7 +35,6 @@ public class Pcars2UDPController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
 		refreshTrackInProgress();
-
 		model.addAttribute(trackInProgress);
 		return "starter";
 	}
@@ -43,13 +42,6 @@ public class Pcars2UDPController {
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
 	public String refresh(Model model) {
 		refreshTrackInProgress();
-		trackInProgress.setCarName("test car");
-		trackInProgress.setTrackName("test track");
-		trackInProgress.setRecordSession(LocalTime.of(0, 1, 55, 76543210).minusSeconds(i++));
-		trackInProgress.setRecordCar(LocalTime.of(0, 1, 52, 876543210));
-		trackInProgress.setRecordClass(LocalTime.of(0, 1, 51, 776543210));
-		trackInProgress.setRecordTrack(LocalTime.of(0, 1, 50, 676543210));
-
 		model.addAttribute(trackInProgress);
 		return "starter :: data";
 	}

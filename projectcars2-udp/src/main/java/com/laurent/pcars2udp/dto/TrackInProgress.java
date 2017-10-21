@@ -96,7 +96,7 @@ public class TrackInProgress {
 		if (time != null && recordToBeaten != null) {
 			diff = Duration.between(recordToBeaten, time);
 		}
-		return (time != null && recordToBeaten == null) || (diff != null && diff.isNegative());
+		return (time != null && recordToBeaten == null) || (diff != null && (diff.isNegative() || diff.isZero()));
 	}
 
 	private String getStringDiff(LocalTime time, LocalTime recordToBeaten) {
