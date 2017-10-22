@@ -6,8 +6,12 @@ import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes = { @Index(name = "IDX_RECORD_CLASS", columnList = "className,trackLocation,trackVariation"),
+		@Index(name = "IDX_RECORD_TRACK", columnList = "trackLocation,trackVariation") })
 public class LapRecord {
 
 	@EmbeddedId

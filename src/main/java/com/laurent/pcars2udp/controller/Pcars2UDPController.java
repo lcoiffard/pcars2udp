@@ -36,7 +36,7 @@ public class Pcars2UDPController {
 	public String home(Model model) {
 		refreshTrackInProgress();
 		model.addAttribute(trackInProgress);
-		return "starter";
+		return "pcars2udp";
 	}
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
@@ -56,7 +56,7 @@ public class Pcars2UDPController {
 		 */
 
 		model.addAttribute(trackInProgress);
-		return "starter :: data";
+		return "pcars2udp :: data";
 	}
 
 	public void refreshTrackInProgress() {
