@@ -61,7 +61,8 @@ public class Pcars2UDPController {
 
 	public void refreshTrackInProgress() {
 
-		if (telemetryData.getGameSessionState() == null || telemetryData.getGameSessionState() == 1) {
+		if (telemetryData.getGameSessionState() == null || telemetryData.getGameSessionState() == 1
+				|| StringUtils.isEmpty(participantInfo.getCarName())) {
 			trackInProgress.setTrackName(null);
 			trackInProgress.setCarName(null);
 			trackInProgress.setRecordSession(null);
@@ -72,6 +73,16 @@ public class Pcars2UDPController {
 			trackInProgress.setRecordTrackCar(null);
 
 		} else {
+
+			// get record first time
+			if (StringUtils.isEmpty(trackInProgress.getTrackName()) && StringUtils.isEmpty(trackInProgress.getCarName())
+					&& !StringUtils.isEmpty(participantInfo.getCarName())
+					&& !StringUtils.isEmpty(participantInfo.getTrackLocation())) {
+				refreshRecordCar();
+				refreshRecordClass();
+				refreshRecordTrack();
+			}
+
 			trackInProgress.setTrackName(participantInfo.getTrackLocation());
 			if (!StringUtils.isEmpty(participantInfo.getTrackVariation())) {
 				trackInProgress
@@ -82,61 +93,76 @@ public class Pcars2UDPController {
 				trackInProgress.setCarName(trackInProgress.getCarName() + " / " + participantInfo.getCarClassName());
 			}
 
-			if (!StringUtils.isEmpty(trackInProgress.getCarName())) {
+			if (telemetryData.getBestLapTime() > 0) {
+				LocalTime bestLapSession = LocalTime.ofNanoOfDay((long) (telemetryData.getBestLapTime() * 1000000000));
 
-				if (telemetryData.getBestLapTime() > 0) {
-					LocalTime bestLapSession = LocalTime
-							.ofNanoOfDay((long) (telemetryData.getBestLapTime() * 1000000000));
-					trackInProgress.setRecordSession(bestLapSession);
-				} else {
-					trackInProgress.setRecordSession(null);
-				}
-
-				if (trackInProgress.getRecordCar() == null) {
-					LapRecord lapRecordCar = lapRecordRepo
-							.findByLapKey_CarNameAndLapKey_TrackLocationAndLapKey_TrackVariation(
-									participantInfo.getCarName(), participantInfo.getTrackLocation(),
-									participantInfo.getTrackVariation());
-					if (lapRecordCar != null) {
-						trackInProgress.setRecordCar(lapRecordCar.getRecordLap());
+				// if best record session is beaten and it was the ancien record car, class,
+				// track, replace
+				if (trackInProgress.getRecordSession() != null
+						&& bestLapSession.isBefore(trackInProgress.getRecordSession())) {
+					if (trackInProgress.getRecordSession().isBefore(trackInProgress.getRecordCar())) {
+						trackInProgress.setRecordCar(trackInProgress.getRecordSession());
 					}
-				}
-
-				if (trackInProgress.getRecordClass() == null) {
-					LapRecord lapRecordClass = lapRecordRepo
-							.findFirstByClassNameAndLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
-									participantInfo.getCarClassName(), participantInfo.getTrackLocation(),
-									participantInfo.getTrackVariation());
-					if (lapRecordClass != null) {
-						trackInProgress.setRecordClass(lapRecordClass.getRecordLap());
-						trackInProgress.setRecordClassCar(lapRecordClass.getLapKey().getCarName());
+					if (trackInProgress.getRecordSession().isBefore(trackInProgress.getRecordClass())) {
+						trackInProgress.setRecordClass(trackInProgress.getRecordSession());
+						trackInProgress.setRecordClassCar(participantInfo.getCarName());
 					}
-				}
-
-				if (trackInProgress.getRecordTrack() == null) {
-					LapRecord lapRecordTrack = lapRecordRepo
-							.findFirstByLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
-									participantInfo.getTrackLocation(), participantInfo.getTrackVariation());
-					if (lapRecordTrack != null) {
-						trackInProgress.setRecordTrack(lapRecordTrack.getRecordLap());
-						trackInProgress.setRecordTrackCar(lapRecordTrack.getLapKey().getCarName());
-						if (!StringUtils.isEmpty(lapRecordTrack.getClassName())) {
+					if (trackInProgress.getRecordSession().isBefore(trackInProgress.getRecordTrack())) {
+						trackInProgress.setRecordTrack(trackInProgress.getRecordSession());
+						trackInProgress.setRecordTrackCar(participantInfo.getCarName());
+						if (!StringUtils.isEmpty(participantInfo.getCarClassName())) {
 							trackInProgress.setRecordTrackCar(
-									trackInProgress.getRecordTrackCar() + " / " + lapRecordTrack.getClassName());
+									trackInProgress.getRecordTrackCar() + " / " + participantInfo.getCarClassName());
 						}
 					}
 				}
 
+				trackInProgress.setRecordSession(bestLapSession);
 			} else {
+				// Refresh record if restart race
+				if (trackInProgress.getRecordSession() != null) {
+					refreshRecordCar();
+					refreshRecordClass();
+					refreshRecordTrack();
+				}
 				trackInProgress.setRecordSession(null);
-				trackInProgress.setRecordCar(null);
-				trackInProgress.setRecordClass(null);
-				trackInProgress.setRecordTrack(null);
-				trackInProgress.setRecordClassCar(null);
-				trackInProgress.setRecordTrackCar(null);
 			}
 
 		}
 
+	}
+
+	private void refreshRecordCar() {
+		LapRecord lapRecordCar = lapRecordRepo.findByLapKey_CarNameAndLapKey_TrackLocationAndLapKey_TrackVariation(
+				participantInfo.getCarName(), participantInfo.getTrackLocation(), participantInfo.getTrackVariation());
+		if (lapRecordCar != null) {
+			trackInProgress.setRecordCar(lapRecordCar.getRecordLap());
+		}
+
+	}
+
+	private void refreshRecordClass() {
+		LapRecord lapRecordClass = lapRecordRepo
+				.findFirstByClassNameAndLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
+						participantInfo.getCarClassName(), participantInfo.getTrackLocation(),
+						participantInfo.getTrackVariation());
+		if (lapRecordClass != null) {
+			trackInProgress.setRecordClass(lapRecordClass.getRecordLap());
+			trackInProgress.setRecordClassCar(lapRecordClass.getLapKey().getCarName());
+		}
+	}
+
+	private void refreshRecordTrack() {
+		LapRecord lapRecordTrack = lapRecordRepo
+				.findFirstByLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
+						participantInfo.getTrackLocation(), participantInfo.getTrackVariation());
+		if (lapRecordTrack != null) {
+			trackInProgress.setRecordTrack(lapRecordTrack.getRecordLap());
+			trackInProgress.setRecordTrackCar(lapRecordTrack.getLapKey().getCarName());
+			if (!StringUtils.isEmpty(lapRecordTrack.getClassName())) {
+				trackInProgress
+						.setRecordTrackCar(trackInProgress.getRecordTrackCar() + " / " + lapRecordTrack.getClassName());
+			}
+		}
 	}
 }

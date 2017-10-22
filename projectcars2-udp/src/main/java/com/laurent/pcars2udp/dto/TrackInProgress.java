@@ -106,7 +106,7 @@ public class TrackInProgress {
 		if (time != null && recordToBeaten != null) {
 			Duration diff = Duration.between(recordToBeaten, time);
 			diffString = (diff.isNegative() ? " - " : " + ")
-					+ DurationFormatUtils.formatDuration(Math.abs(diff.toMillis()), "mm:ss:SSS");
+					+ DurationFormatUtils.formatDuration(Math.abs(diff.toMillis()), "mm:ss.SSS");
 		}
 		return diffString;
 	}
