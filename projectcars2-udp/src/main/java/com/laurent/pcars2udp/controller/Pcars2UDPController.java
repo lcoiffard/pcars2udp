@@ -100,14 +100,14 @@ public class Pcars2UDPController {
 				// track, replace
 				if (trackInProgress.getRecordSession() != null
 						&& bestLapSession.isBefore(trackInProgress.getRecordSession())) {
-					if (trackInProgress.getRecordSession().isBefore(trackInProgress.getRecordCar())) {
+					if (trackInProgress.getRecordCarBeaten()) {
 						trackInProgress.setRecordCar(trackInProgress.getRecordSession());
 					}
-					if (trackInProgress.getRecordSession().isBefore(trackInProgress.getRecordClass())) {
+					if (trackInProgress.getRecordClassBeaten()) {
 						trackInProgress.setRecordClass(trackInProgress.getRecordSession());
 						trackInProgress.setRecordClassCar(participantInfo.getCarName());
 					}
-					if (trackInProgress.getRecordSession().isBefore(trackInProgress.getRecordTrack())) {
+					if (trackInProgress.getRecordTrackBeaten()) {
 						trackInProgress.setRecordTrack(trackInProgress.getRecordSession());
 						trackInProgress.setRecordTrackCar(participantInfo.getCarName());
 						if (!StringUtils.isEmpty(participantInfo.getCarClassName())) {

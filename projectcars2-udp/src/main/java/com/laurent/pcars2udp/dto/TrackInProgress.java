@@ -94,11 +94,8 @@ public class TrackInProgress {
 	}
 
 	private Boolean isRecordBeaten(LocalTime time, LocalTime recordToBeaten) {
-		Duration diff = null;
-		if (time != null && recordToBeaten != null) {
-			diff = Duration.between(recordToBeaten, time);
-		}
-		return (time != null && recordToBeaten == null) || (diff != null && (diff.isNegative() || diff.isZero()));
+		return (time != null && recordToBeaten == null)
+				|| (time != null && recordToBeaten != null && time.isBefore(recordToBeaten));
 	}
 
 	private String getStringDiff(LocalTime time, LocalTime recordToBeaten) {
