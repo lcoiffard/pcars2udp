@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.laurent.pcars2udp.dto.ParticipantInfo;
+import com.laurent.pcars2udp.dto.Record;
 import com.laurent.pcars2udp.dto.TelemetryData;
 import com.laurent.pcars2udp.dto.TrackInProgress;
 import com.laurent.pcars2udp.entity.LapRecord;
@@ -44,16 +45,36 @@ public class Pcars2UDPController {
 		refreshTrackInProgress();
 		// Util for mock
 
-		/*
-		 * trackInProgress.setCarName("test car");
-		 * trackInProgress.setTrackName("test track");
-		 * trackInProgress.setRecordSession(LocalTime.of(0, 1, 55,
-		 * 76543210).minusSeconds(i++)); trackInProgress.setRecordCar(LocalTime.of(0, 1,
-		 * 52, 876543210)); trackInProgress.setRecordClass(LocalTime.of(0, 1, 51,
-		 * 776543210)); trackInProgress.setRecordTrack(LocalTime.of(0, 1, 50,
-		 * 676543210)); trackInProgress.setRecordClassCar("Mazda");
-		 * trackInProgress.setRecordTrackCar("Mercedes / GTO");
-		 */
+		// trackInProgress.getRecordSession().setTrackName("Aerordromo international
+		// Algarte");
+		// trackInProgress.getRecordSession().setTrackVariation("Long circuit");
+		// trackInProgress.getRecordSession().setCarName("Mercedes R01 GT 5");
+		// trackInProgress.getRecordSession().setClassName("Vintage");
+		//
+		// trackInProgress.getRecordSession().setRecord(LocalTime.of(0, 1, 55,
+		// 76543210).minusSeconds(i++));
+		//
+		// trackInProgress.getRecordSession().setRecordSectorOne(LocalTime.of(0, 0, 19,
+		// 876543210).minusSeconds(i));
+		// trackInProgress.getRecordSession().setRecordSectorTwo(LocalTime.of(0, 1, 5,
+		// 876543210).minusSeconds(i));
+		// trackInProgress.getRecordSession().setRecordSectorThree(LocalTime.of(0, 0,
+		// 37, 876543210).minusSeconds(i));
+		//
+		// trackInProgress.getRecordCar().setRecord(LocalTime.of(0, 1, 52, 876543210));
+		// trackInProgress.getRecordCar().setRecordSectorOne(LocalTime.of(0, 0, 17,
+		// 876543210));
+		// trackInProgress.getRecordCar().setRecordSectorTwo(LocalTime.of(0, 1, 1,
+		// 876543210));
+		// trackInProgress.getRecordCar().setRecordSectorThree(LocalTime.of(0, 0, 34,
+		// 876543210));
+		// trackInProgress.getRecordClass().setRecord(LocalTime.of(0, 1, 51,
+		// 776543210));
+		// trackInProgress.getRecordTrack().setRecord(LocalTime.of(0, 1, 50,
+		// 676543210));
+		// trackInProgress.getRecordClass().setCarName("Mazda");
+		// trackInProgress.getRecordTrack().setCarName("Mercedes");
+		// trackInProgress.getRecordTrack().setClassName("GTO");
 
 		model.addAttribute(trackInProgress);
 		return "pcars2udp :: data";
@@ -63,19 +84,16 @@ public class Pcars2UDPController {
 
 		if (telemetryData.getGameSessionState() == null || telemetryData.getGameSessionState() == 1
 				|| StringUtils.isEmpty(participantInfo.getCarName())) {
-			trackInProgress.setTrackName(null);
-			trackInProgress.setCarName(null);
-			trackInProgress.setRecordSession(null);
-			trackInProgress.setRecordCar(null);
-			trackInProgress.setRecordClass(null);
-			trackInProgress.setRecordTrack(null);
-			trackInProgress.setRecordClassCar(null);
-			trackInProgress.setRecordTrackCar(null);
+			trackInProgress.getRecordSession().reset();
+			trackInProgress.getRecordCar().reset();
+			trackInProgress.getRecordClass().reset();
+			trackInProgress.getRecordTrack().reset();
 
 		} else {
 
 			// get record first time
-			if (StringUtils.isEmpty(trackInProgress.getTrackName()) && StringUtils.isEmpty(trackInProgress.getCarName())
+			if (StringUtils.isEmpty(trackInProgress.getRecordSession().getTrackName())
+					&& StringUtils.isEmpty(trackInProgress.getRecordSession().getCarName())
 					&& !StringUtils.isEmpty(participantInfo.getCarName())
 					&& !StringUtils.isEmpty(participantInfo.getTrackLocation())) {
 				refreshRecordCar();
@@ -83,41 +101,31 @@ public class Pcars2UDPController {
 				refreshRecordTrack();
 			}
 
-			trackInProgress.setTrackName(participantInfo.getTrackLocation());
-			if (!StringUtils.isEmpty(participantInfo.getTrackVariation())) {
-				trackInProgress
-						.setTrackName(trackInProgress.getTrackName() + " / " + participantInfo.getTrackVariation());
-			}
-			trackInProgress.setCarName(participantInfo.getCarName());
-			if (!StringUtils.isEmpty(participantInfo.getCarClassName())) {
-				trackInProgress.setCarName(trackInProgress.getCarName() + " / " + participantInfo.getCarClassName());
-			}
+			trackInProgress.getRecordSession().setTrackName(participantInfo.getTrackLocation());
+			trackInProgress.getRecordSession().setTrackVariation(participantInfo.getTrackVariation());
+			trackInProgress.getRecordSession().setCarName(participantInfo.getCarName());
+			trackInProgress.getRecordSession().setClassName(participantInfo.getCarClassName());
 
 			if (telemetryData.getBestLapTime() > 0) {
 				LocalTime bestLapSession = LocalTime.ofNanoOfDay((long) (telemetryData.getBestLapTime() * 1000000000));
 
 				// if best record session is beaten and it was the ancien record car, class,
 				// track, replace
-				if (trackInProgress.getRecordSession() != null
-						&& bestLapSession.isBefore(trackInProgress.getRecordSession())) {
-					if (trackInProgress.getRecordCarBeaten()) {
-						trackInProgress.setRecordCar(trackInProgress.getRecordSession());
+				if (trackInProgress.getRecordSession().isRecordBeaten(bestLapSession)) {
+					if (trackInProgress.getRecordCar().isRecordBeaten(trackInProgress.getRecordSession().getRecord())) {
+						trackInProgress.setRecordCar(trackInProgress.getRecordSession().clone());
 					}
-					if (trackInProgress.getRecordClassBeaten()) {
-						trackInProgress.setRecordClass(trackInProgress.getRecordSession());
-						trackInProgress.setRecordClassCar(participantInfo.getCarName());
+					if (trackInProgress.getRecordClass()
+							.isRecordBeaten(trackInProgress.getRecordSession().getRecord())) {
+						trackInProgress.setRecordClass(trackInProgress.getRecordSession().clone());
 					}
-					if (trackInProgress.getRecordTrackBeaten()) {
-						trackInProgress.setRecordTrack(trackInProgress.getRecordSession());
-						trackInProgress.setRecordTrackCar(participantInfo.getCarName());
-						if (!StringUtils.isEmpty(participantInfo.getCarClassName())) {
-							trackInProgress.setRecordTrackCar(
-									trackInProgress.getRecordTrackCar() + " / " + participantInfo.getCarClassName());
-						}
+					if (trackInProgress.getRecordTrack()
+							.isRecordBeaten(trackInProgress.getRecordSession().getRecord())) {
+						trackInProgress.setRecordTrack(trackInProgress.getRecordSession().clone());
 					}
 				}
 
-				trackInProgress.setRecordSession(bestLapSession);
+				trackInProgress.getRecordSession().setRecord(bestLapSession);
 			} else {
 				// Refresh record if restart race
 				if (trackInProgress.getRecordSession() != null) {
@@ -125,7 +133,7 @@ public class Pcars2UDPController {
 					refreshRecordClass();
 					refreshRecordTrack();
 				}
-				trackInProgress.setRecordSession(null);
+				trackInProgress.getRecordSession().resetTime();
 			}
 
 		}
@@ -136,8 +144,20 @@ public class Pcars2UDPController {
 		LapRecord lapRecordCar = lapRecordRepo.findByLapKey_CarNameAndLapKey_TrackLocationAndLapKey_TrackVariation(
 				participantInfo.getCarName(), participantInfo.getTrackLocation(), participantInfo.getTrackVariation());
 		if (lapRecordCar != null) {
-			trackInProgress.setRecordCar(lapRecordCar.getRecordLap());
+			refreshRecord(trackInProgress.getRecordCar(), lapRecordCar);
 		}
+
+	}
+
+	private void refreshRecord(Record record, LapRecord lapRecord) {
+		record.setTrackName(lapRecord.getLapKey().getTrackLocation());
+		record.setTrackVariation(lapRecord.getLapKey().getTrackVariation());
+		record.setCarName(lapRecord.getLapKey().getCarName());
+		record.setClassName(lapRecord.getClassName());
+		record.setRecord(lapRecord.getRecordLap());
+		record.setRecordSectorOne(lapRecord.getRecordSectorOne());
+		record.setRecordSectorTwo(lapRecord.getRecordSectorTwo());
+		record.setRecordSectorThree(lapRecord.getRecordSectorThree());
 
 	}
 
@@ -147,8 +167,7 @@ public class Pcars2UDPController {
 						participantInfo.getCarClassName(), participantInfo.getTrackLocation(),
 						participantInfo.getTrackVariation());
 		if (lapRecordClass != null) {
-			trackInProgress.setRecordClass(lapRecordClass.getRecordLap());
-			trackInProgress.setRecordClassCar(lapRecordClass.getLapKey().getCarName());
+			refreshRecord(trackInProgress.getRecordClass(), lapRecordClass);
 		}
 	}
 
@@ -157,12 +176,7 @@ public class Pcars2UDPController {
 				.findFirstByLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
 						participantInfo.getTrackLocation(), participantInfo.getTrackVariation());
 		if (lapRecordTrack != null) {
-			trackInProgress.setRecordTrack(lapRecordTrack.getRecordLap());
-			trackInProgress.setRecordTrackCar(lapRecordTrack.getLapKey().getCarName());
-			if (!StringUtils.isEmpty(lapRecordTrack.getClassName())) {
-				trackInProgress
-						.setRecordTrackCar(trackInProgress.getRecordTrackCar() + " / " + lapRecordTrack.getClassName());
-			}
+			refreshRecord(trackInProgress.getRecordTrack(), lapRecordTrack);
 		}
 	}
 }
