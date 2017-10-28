@@ -149,7 +149,7 @@
                               <i class="fa" th:classappend="${trackInProgress.recordTrack.isRecordBeaten(trackInProgress.recordSession.record)} ? fa-thumbs-o-up : fa-star"></i>
                               </span>
                               <div class="info-box-content">
-                                 <span class="info-box-text" style="font-size:12px" th:text="${'Record class' + (trackInProgress.recordTrack.labelCar != null ? ' (' + trackInProgress.recordTrack.labelCar +')' : '')}"/>
+                                 <span class="info-box-text" style="font-size:12px" th:text="${'Record track' + (trackInProgress.recordTrack.labelCar != null ? ' (' + trackInProgress.recordTrack.labelCar +')' : '')}"/>
                                  <span class="info-box-number" style="font-size:14px" th:text="${trackInProgress.recordTrack.record} ? ${#temporals.format(trackInProgress.recordTrack.record,'mm:ss.SSS')} : '--:--.---'"/>
                                  <span class="badge" style="width: 98%" th:classappend="${trackInProgress.recordTrack.isRecordBeaten(trackInProgress.recordSession.record)} ? bg-green : bg-red" th:text="${trackInProgress.recordTrack.getDiffRecord(trackInProgress.recordSession.record)}"/>
                                  <div>

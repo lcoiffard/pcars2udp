@@ -2,10 +2,10 @@ package com.laurent.pcars2udp.controller;
 
 import java.time.LocalTime;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -36,6 +36,7 @@ public class Pcars2UDPController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
 		refreshTrackInProgress();
+
 		model.addAttribute(trackInProgress);
 		return "pcars2udp";
 	}
@@ -82,32 +83,42 @@ public class Pcars2UDPController {
 
 	public void refreshTrackInProgress() {
 
-		if (telemetryData.getGameSessionState() == null || telemetryData.getGameSessionState() == 1
-				|| StringUtils.isEmpty(participantInfo.getCarName())) {
-			trackInProgress.getRecordSession().reset();
-			trackInProgress.getRecordCar().reset();
-			trackInProgress.getRecordClass().reset();
-			trackInProgress.getRecordTrack().reset();
+		// if we are on track
+		if (telemetryData.getGameSessionState() != null && telemetryData.getGameSessionState() != 1
+				&& !StringUtils.isEmpty(participantInfo.getCarName())) {
 
-		} else {
+			// if car/track change, refresh
+			if (!StringUtils.isEmpty(participantInfo.getCarName())
+					&& !StringUtils.isEmpty(participantInfo.getTrackLocation())
+					&& !StringUtils.isEmpty(participantInfo.getTrackVariation())
+					&& (!StringUtils.equals(trackInProgress.getRecordSession().getCarName(),
+							participantInfo.getCarName())
+							|| !StringUtils.equals(trackInProgress.getRecordSession().getTrackName(),
+									participantInfo.getTrackLocation())
+							|| !StringUtils.equals(trackInProgress.getRecordSession().getTrackVariation(),
+									participantInfo.getTrackVariation()))) {
 
-			// get record first time
-			if (StringUtils.isEmpty(trackInProgress.getRecordSession().getTrackName())
-					&& StringUtils.isEmpty(trackInProgress.getRecordSession().getCarName())
-					&& !StringUtils.isEmpty(participantInfo.getCarName())
-					&& !StringUtils.isEmpty(participantInfo.getTrackLocation())) {
+				trackInProgress.getRecordSession().setTrackName(participantInfo.getTrackLocation());
+				trackInProgress.getRecordSession().setTrackVariation(participantInfo.getTrackVariation());
+				trackInProgress.getRecordSession().setCarName(participantInfo.getCarName());
+				trackInProgress.getRecordSession().setClassName(participantInfo.getCarClassName());
+
+				trackInProgress.getRecordSession().resetTime();
+
 				refreshRecordCar();
 				refreshRecordClass();
 				refreshRecordTrack();
-			}
 
-			trackInProgress.getRecordSession().setTrackName(participantInfo.getTrackLocation());
-			trackInProgress.getRecordSession().setTrackVariation(participantInfo.getTrackVariation());
-			trackInProgress.getRecordSession().setCarName(participantInfo.getCarName());
-			trackInProgress.getRecordSession().setClassName(participantInfo.getCarClassName());
+			}
 
 			if (telemetryData.getBestLapTime() > 0) {
 				LocalTime bestLapSession = LocalTime.ofNanoOfDay((long) (telemetryData.getBestLapTime() * 1000000000));
+				LocalTime bestLapSessionSectorOne = LocalTime
+						.ofNanoOfDay((long) (telemetryData.getFastestSector1Time() * 1000000000));
+				LocalTime bestLapSessionSectorTwo = LocalTime
+						.ofNanoOfDay((long) (telemetryData.getFastestSector2Time() * 1000000000));
+				LocalTime bestLapSessionSectorThree = LocalTime
+						.ofNanoOfDay((long) (telemetryData.getFastestSector3Time() * 1000000000));
 
 				// if best record session is beaten and it was the ancien record car, class,
 				// track, replace
@@ -126,9 +137,12 @@ public class Pcars2UDPController {
 				}
 
 				trackInProgress.getRecordSession().setRecord(bestLapSession);
+				trackInProgress.getRecordSession().setRecordSectorOne(bestLapSessionSectorOne);
+				trackInProgress.getRecordSession().setRecordSectorTwo(bestLapSessionSectorTwo);
+				trackInProgress.getRecordSession().setRecordSectorThree(bestLapSessionSectorThree);
 			} else {
 				// Refresh record if restart race
-				if (trackInProgress.getRecordSession() != null) {
+				if (trackInProgress.getRecordSession().getRecord() != null) {
 					refreshRecordCar();
 					refreshRecordClass();
 					refreshRecordTrack();
@@ -141,12 +155,13 @@ public class Pcars2UDPController {
 	}
 
 	private void refreshRecordCar() {
+		trackInProgress.getRecordCar().resetTime();
 		LapRecord lapRecordCar = lapRecordRepo.findByLapKey_CarNameAndLapKey_TrackLocationAndLapKey_TrackVariation(
 				participantInfo.getCarName(), participantInfo.getTrackLocation(), participantInfo.getTrackVariation());
+
 		if (lapRecordCar != null) {
 			refreshRecord(trackInProgress.getRecordCar(), lapRecordCar);
 		}
-
 	}
 
 	private void refreshRecord(Record record, LapRecord lapRecord) {
@@ -162,16 +177,20 @@ public class Pcars2UDPController {
 	}
 
 	private void refreshRecordClass() {
+
+		trackInProgress.getRecordClass().resetTime();
 		LapRecord lapRecordClass = lapRecordRepo
 				.findFirstByClassNameAndLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
 						participantInfo.getCarClassName(), participantInfo.getTrackLocation(),
 						participantInfo.getTrackVariation());
+
 		if (lapRecordClass != null) {
 			refreshRecord(trackInProgress.getRecordClass(), lapRecordClass);
 		}
 	}
 
 	private void refreshRecordTrack() {
+		trackInProgress.getRecordTrack().resetTime();
 		LapRecord lapRecordTrack = lapRecordRepo
 				.findFirstByLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
 						participantInfo.getTrackLocation(), participantInfo.getTrackVariation());
