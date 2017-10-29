@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.laurent.pcars2udp.dto.ParticipantInfo;
-import com.laurent.pcars2udp.dto.Record;
 import com.laurent.pcars2udp.dto.TelemetryData;
+import com.laurent.pcars2udp.dto.TimeLap;
 import com.laurent.pcars2udp.dto.TrackInProgress;
 import com.laurent.pcars2udp.entity.LapRecord;
 import com.laurent.pcars2udp.repo.LapRecordRepo;
@@ -51,8 +51,8 @@ public class Pcars2UDPController {
 		// trackInProgress.getRecordSession().setTrackVariation("Long circuit");
 		// trackInProgress.getRecordSession().setCarName("Mercedes R01 GT 5");
 		// trackInProgress.getRecordSession().setClassName("Vintage");
-		//
-		// trackInProgress.getRecordSession().setRecord(LocalTime.of(0, 1, 55,
+
+		// trackInProgress.getRecordSession().setTimeLap(LocalTime.of(0, 1, 55,
 		// 76543210).minusSeconds(i++));
 		//
 		// trackInProgress.getRecordSession().setRecordSectorOne(LocalTime.of(0, 0, 19,
@@ -61,14 +61,15 @@ public class Pcars2UDPController {
 		// 876543210).minusSeconds(i));
 		// trackInProgress.getRecordSession().setRecordSectorThree(LocalTime.of(0, 0,
 		// 37, 876543210).minusSeconds(i));
-		//
-		// trackInProgress.getRecordCar().setRecord(LocalTime.of(0, 1, 52, 876543210));
-		// trackInProgress.getRecordCar().setRecordSectorOne(LocalTime.of(0, 0, 17,
+
+		// trackInProgress.getRecordCar().setTimeLap(LocalTime.of(0, 1, 52, 876543210));
+		// trackInProgress.getRecordCar().setTimeSectorOne(LocalTime.of(0, 0, 17,
 		// 876543210));
-		// trackInProgress.getRecordCar().setRecordSectorTwo(LocalTime.of(0, 1, 1,
+		// trackInProgress.getRecordCar().setTimeSectorTwo(LocalTime.of(0, 1, 1,
 		// 876543210));
-		// trackInProgress.getRecordCar().setRecordSectorThree(LocalTime.of(0, 0, 34,
+		// trackInProgress.getRecordCar().setTimeSectorThree(LocalTime.of(0, 0, 34,
 		// 876543210));
+
 		// trackInProgress.getRecordClass().setRecord(LocalTime.of(0, 1, 51,
 		// 776543210));
 		// trackInProgress.getRecordTrack().setRecord(LocalTime.of(0, 1, 50,
@@ -122,27 +123,27 @@ public class Pcars2UDPController {
 
 				// if best record session is beaten and it was the ancien record car, class,
 				// track, replace
-				if (trackInProgress.getRecordSession().isRecordBeaten(bestLapSession)) {
-					if (trackInProgress.getRecordCar().isRecordBeaten(trackInProgress.getRecordSession().getRecord())) {
+				if (trackInProgress.getRecordSession().isTimeBeaten(bestLapSession)) {
+					if (trackInProgress.getRecordCar().isTimeBeaten(trackInProgress.getRecordSession().getTimeLap())) {
 						trackInProgress.setRecordCar(trackInProgress.getRecordSession().clone());
 					}
 					if (trackInProgress.getRecordClass()
-							.isRecordBeaten(trackInProgress.getRecordSession().getRecord())) {
+							.isTimeBeaten(trackInProgress.getRecordSession().getTimeLap())) {
 						trackInProgress.setRecordClass(trackInProgress.getRecordSession().clone());
 					}
 					if (trackInProgress.getRecordTrack()
-							.isRecordBeaten(trackInProgress.getRecordSession().getRecord())) {
+							.isTimeBeaten(trackInProgress.getRecordSession().getTimeLap())) {
 						trackInProgress.setRecordTrack(trackInProgress.getRecordSession().clone());
 					}
 				}
 
-				trackInProgress.getRecordSession().setRecord(bestLapSession);
-				trackInProgress.getRecordSession().setRecordSectorOne(bestLapSessionSectorOne);
-				trackInProgress.getRecordSession().setRecordSectorTwo(bestLapSessionSectorTwo);
-				trackInProgress.getRecordSession().setRecordSectorThree(bestLapSessionSectorThree);
+				trackInProgress.getRecordSession().setTimeLap(bestLapSession);
+				trackInProgress.getRecordSession().setTimeSectorOne(bestLapSessionSectorOne);
+				trackInProgress.getRecordSession().setTimeSectorTwo(bestLapSessionSectorTwo);
+				trackInProgress.getRecordSession().setTimeSectorThree(bestLapSessionSectorThree);
 			} else {
 				// Refresh record if restart race
-				if (trackInProgress.getRecordSession().getRecord() != null) {
+				if (trackInProgress.getRecordSession().getTimeLap() != null) {
 					refreshRecordCar();
 					refreshRecordClass();
 					refreshRecordTrack();
@@ -164,15 +165,15 @@ public class Pcars2UDPController {
 		}
 	}
 
-	private void refreshRecord(Record record, LapRecord lapRecord) {
+	private void refreshRecord(TimeLap record, LapRecord lapRecord) {
 		record.setTrackName(lapRecord.getLapKey().getTrackLocation());
 		record.setTrackVariation(lapRecord.getLapKey().getTrackVariation());
 		record.setCarName(lapRecord.getLapKey().getCarName());
 		record.setClassName(lapRecord.getClassName());
-		record.setRecord(lapRecord.getRecordLap());
-		record.setRecordSectorOne(lapRecord.getRecordSectorOne());
-		record.setRecordSectorTwo(lapRecord.getRecordSectorTwo());
-		record.setRecordSectorThree(lapRecord.getRecordSectorThree());
+		record.setTimeLap(lapRecord.getRecordLap());
+		record.setTimeSectorOne(lapRecord.getRecordSectorOne());
+		record.setTimeSectorTwo(lapRecord.getRecordSectorTwo());
+		record.setTimeSectorThree(lapRecord.getRecordSectorThree());
 
 	}
 

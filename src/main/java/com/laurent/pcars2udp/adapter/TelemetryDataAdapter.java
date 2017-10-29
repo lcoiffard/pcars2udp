@@ -19,6 +19,9 @@ public class TelemetryDataAdapter {
 		telemetryData.setBestLapTime(bufferByteUtils.getFloat(data, 12, 32));
 		telemetryData.setLastLapTime(bufferByteUtils.getFloat(data, 16, 32));
 		telemetryData.setCurrentTime(bufferByteUtils.getFloat(data, 20, 32));
+		telemetryData.setCurrentSector1Time(bufferByteUtils.getFloat(data, 48, 32));
+		telemetryData.setCurrentSector2Time(bufferByteUtils.getFloat(data, 52, 32));
+		telemetryData.setCurrentSector3Time(bufferByteUtils.getFloat(data, 56, 32));
 		telemetryData.setFastestSector1Time(bufferByteUtils.getFloat(data, 60, 32));
 		telemetryData.setFastestSector2Time(bufferByteUtils.getFloat(data, 64, 32));
 		telemetryData.setFastestSector3Time(bufferByteUtils.getFloat(data, 68, 32));

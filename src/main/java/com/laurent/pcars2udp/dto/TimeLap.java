@@ -6,17 +6,17 @@ import java.time.LocalTime;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
-public class Record implements Cloneable {
+public class TimeLap implements Cloneable {
 
 	private String trackName;
 	private String trackVariation;
 	private String carName;
 	private String className;
 
-	private LocalTime record;
-	private LocalTime recordSectorOne;
-	private LocalTime recordSectorTwo;
-	private LocalTime recordSectorThree;
+	private LocalTime timeLap;
+	private LocalTime timeSectorOne;
+	private LocalTime timeSectorTwo;
+	private LocalTime timeSectorThree;
 
 	public String getTrackName() {
 		return trackName;
@@ -50,79 +50,79 @@ public class Record implements Cloneable {
 		this.className = className;
 	}
 
-	public LocalTime getRecord() {
-		return record;
+	public LocalTime getTimeLap() {
+		return timeLap;
 	}
 
-	public void setRecord(LocalTime record) {
-		this.record = record;
+	public void setTimeLap(LocalTime timeLap) {
+		this.timeLap = timeLap;
 	}
 
-	public LocalTime getRecordSectorOne() {
-		return recordSectorOne;
+	public LocalTime getTimeSectorOne() {
+		return timeSectorOne;
 	}
 
-	public void setRecordSectorOne(LocalTime recordSectorOne) {
-		this.recordSectorOne = recordSectorOne;
+	public void setTimeSectorOne(LocalTime timeSectorOne) {
+		this.timeSectorOne = timeSectorOne;
 	}
 
-	public LocalTime getRecordSectorTwo() {
-		return recordSectorTwo;
+	public LocalTime getTimeSectorTwo() {
+		return timeSectorTwo;
 	}
 
-	public void setRecordSectorTwo(LocalTime recordSectorTwo) {
-		this.recordSectorTwo = recordSectorTwo;
+	public void setTimeSectorTwo(LocalTime timeSectorTwo) {
+		this.timeSectorTwo = timeSectorTwo;
 	}
 
-	public LocalTime getRecordSectorThree() {
-		return recordSectorThree;
+	public LocalTime getTimeSectorThree() {
+		return timeSectorThree;
 	}
 
-	public void setRecordSectorThree(LocalTime recordSectorThree) {
-		this.recordSectorThree = recordSectorThree;
+	public void setTimeSectorThree(LocalTime timeSectorThree) {
+		this.timeSectorThree = timeSectorThree;
 	}
 
-	public Boolean isRecordBeaten(LocalTime time) {
-		return isBeaten(time, this.record);
+	public Boolean isTimeBeaten(LocalTime time) {
+		return isBeaten(time, this.timeLap);
 	}
 
-	public String getDiffRecord(LocalTime time) {
-		return getStringDiff(time, this.record);
+	public String getDiffTime(LocalTime time) {
+		return getStringDiff(time, this.timeLap);
 	}
 
 	public Boolean isSectorOneBeaten(LocalTime time) {
-		return isBeaten(time, this.recordSectorOne);
+		return isBeaten(time, this.timeSectorOne);
 	}
 
 	public String getDiffSectorOne(LocalTime time) {
-		return getStringDiff(time, this.recordSectorOne);
+		return getStringDiff(time, this.timeSectorOne);
 	}
 
 	public Boolean isSectorTwoBeaten(LocalTime time) {
-		return isBeaten(time, this.recordSectorTwo);
+		return isBeaten(time, this.timeSectorTwo);
 	}
 
 	public String getDiffSectorTwo(LocalTime time) {
-		return getStringDiff(time, this.recordSectorTwo);
+		return getStringDiff(time, this.timeSectorTwo);
 	}
 
 	public Boolean isSectorThreeBeaten(LocalTime time) {
-		return isBeaten(time, this.recordSectorThree);
+		return isBeaten(time, this.timeSectorThree);
 	}
 
 	public String getDiffSectorThree(LocalTime time) {
-		return getStringDiff(time, this.recordSectorThree);
+		return getStringDiff(time, this.timeSectorThree);
 	}
 
-	public Boolean isBeaten(LocalTime time, LocalTime recordToBeat) {
-		return (time != null && recordToBeat == null)
-				|| (time != null && recordToBeat != null && time.isBefore(recordToBeat));
+	public Boolean isBeaten(LocalTime time, LocalTime timeToBeat) {
+		return (time != null && timeToBeat == null)
+				|| (time != null && timeToBeat != null && time.isBefore(timeToBeat));
 	}
 
-	public String getStringDiff(LocalTime time, LocalTime recordToBeat) {
+	public String getStringDiff(LocalTime time, LocalTime timeToBeat) {
 		String diffString = null;
-		if (time != null && recordToBeat != null) {
-			Duration diff = Duration.between(recordToBeat, time);
+		if (time != null && timeToBeat != null) {
+			Duration diff = Duration.between(timeToBeat, time);
 			diffString = (diff.isNegative() ? "-" : "+")
 					+ DurationFormatUtils.formatDuration(Math.abs(diff.toMillis()), "mm:ss.SSS");
 		}
@@ -156,24 +156,24 @@ public class Record implements Cloneable {
 		this.trackVariation = null;
 		this.carName = null;
 		this.className = null;
-		this.record = null;
-		this.recordSectorOne = null;
-		this.recordSectorTwo = null;
-		this.recordSectorThree = null;
+		this.timeLap = null;
+		this.timeSectorOne = null;
+		this.timeSectorTwo = null;
+		this.timeSectorThree = null;
 	}
 
 	public void resetTime() {
-		this.record = null;
-		this.recordSectorOne = null;
-		this.recordSectorTwo = null;
-		this.recordSectorThree = null;
+		this.timeLap = null;
+		this.timeSectorOne = null;
+		this.timeSectorTwo = null;
+		this.timeSectorThree = null;
 	}
 
 	@Override
-	public Record clone() {
-		final Record clone;
+	public TimeLap clone() {
+		final TimeLap clone;
 		try {
-			clone = (Record) super.clone();
+			clone = (TimeLap) super.clone();
 		} catch (CloneNotSupportedException ex) {
 			throw new RuntimeException("superclass messed up", ex);
 		}

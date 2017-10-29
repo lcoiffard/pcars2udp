@@ -5,41 +5,50 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrackInProgress {
 
-	private Record recordSession = new Record();
-	private Record recordCar = new Record();
-	private Record recordClass = new Record();
-	private Record recordTrack = new Record();
+	private TimeLap currentLap = new TimeLap();
+	private TimeLap recordSession = new TimeLap();
+	private TimeLap recordCar = new TimeLap();
+	private TimeLap recordClass = new TimeLap();
+	private TimeLap recordTrack = new TimeLap();
 
-	public Record getRecordSession() {
+	public TimeLap getRecordSession() {
 		return recordSession;
 	}
 
-	public void setRecordSession(Record recordSession) {
+	public void setRecordSession(TimeLap recordSession) {
 		this.recordSession = recordSession;
 	}
 
-	public Record getRecordCar() {
+	public TimeLap getRecordCar() {
 		return recordCar;
 	}
 
-	public void setRecordCar(Record recordCar) {
+	public void setRecordCar(TimeLap recordCar) {
 		this.recordCar = recordCar;
 	}
 
-	public Record getRecordClass() {
+	public TimeLap getRecordClass() {
 		return recordClass;
 	}
 
-	public void setRecordClass(Record recordClass) {
+	public void setRecordClass(TimeLap recordClass) {
 		this.recordClass = recordClass;
 	}
 
-	public Record getRecordTrack() {
+	public TimeLap getRecordTrack() {
 		return recordTrack;
 	}
 
-	public void setRecordTrack(Record recordTrack) {
+	public void setRecordTrack(TimeLap recordTrack) {
 		this.recordTrack = recordTrack;
+	}
+
+	public TimeLap getCurrentLap() {
+		return currentLap;
+	}
+
+	public void setCurrentLap(TimeLap currentLap) {
+		this.currentLap = currentLap;
 	}
 
 }

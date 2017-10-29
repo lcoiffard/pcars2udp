@@ -15,6 +15,9 @@ public class TelemetryData {
 	private float fastestSector1Time;
 	private float fastestSector2Time;
 	private float fastestSector3Time;
+	private float currentSector1Time;
+	private float currentSector2Time;
+	private float currentSector3Time;
 
 	public Integer getBuildVersionNumber() {
 		return buildVersionNumber;
@@ -86,6 +89,30 @@ public class TelemetryData {
 
 	public void setFastestSector3Time(float fastestSector3Time) {
 		this.fastestSector3Time = fastestSector3Time;
+	}
+
+	public float getCurrentSector1Time() {
+		return currentSector1Time;
+	}
+
+	public void setCurrentSector1Time(float currentSector1Time) {
+		this.currentSector1Time = currentSector1Time;
+	}
+
+	public float getCurrentSector2Time() {
+		return currentSector2Time;
+	}
+
+	public void setCurrentSector2Time(float currentSector2Time) {
+		this.currentSector2Time = currentSector2Time;
+	}
+
+	public float getCurrentSector3Time() {
+		return currentSector3Time;
+	}
+
+	public void setCurrentSector3Time(float currentSector3Time) {
+		this.currentSector3Time = currentSector3Time;
 	}
 
 }
