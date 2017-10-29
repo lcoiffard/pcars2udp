@@ -1,5 +1,8 @@
 package com.laurent.pcars2udp;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +21,10 @@ public class Application {
 	@Autowired
 	private UDPThread udpThread;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, URISyntaxException {
 		SpringApplication.run(Application.class, args);
 
+		Runtime.getRuntime().exec(new String[] { "sh", "-c", "/opt/google/chrome/chrome http://localhost:8080" });
 	}
 
 	@PostConstruct
