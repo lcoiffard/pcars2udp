@@ -1,7 +1,6 @@
 package com.laurent.pcars2udp.entity;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -23,26 +22,26 @@ public class LapRecord {
 	@Column
 	private String className;
 
-	@Column
-	private LocalTime recordLap;
+	@Column(columnDefinition = "TIMESTAMP")
+	private LocalDateTime recordLap;
 
-	@Column
+	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime recordDate;
 
-	@Column
-	LocalTime recordSectorOne;
+	@Column(columnDefinition = "TIMESTAMP")
+	LocalDateTime recordSectorOne;
 
-	@Column
-	LocalTime recordSectorTwo;
+	@Column(columnDefinition = "TIMESTAMP")
+	LocalDateTime recordSectorTwo;
 
-	@Column
-	LocalTime recordSectorThree;
+	@Column(columnDefinition = "TIMESTAMP")
+	LocalDateTime recordSectorThree;
 
-	public LocalTime getRecordLap() {
+	public LocalDateTime getRecordLap() {
 		return recordLap;
 	}
 
-	public void setRecordLap(LocalTime recordLap) {
+	public void setRecordLap(LocalDateTime recordLap) {
 		this.recordLap = recordLap;
 	}
 
@@ -78,27 +77,27 @@ public class LapRecord {
 		this.className = className;
 	}
 
-	public LocalTime getRecordSectorOne() {
+	public LocalDateTime getRecordSectorOne() {
 		return recordSectorOne;
 	}
 
-	public void setRecordSectorOne(LocalTime recordSectorOne) {
+	public void setRecordSectorOne(LocalDateTime recordSectorOne) {
 		this.recordSectorOne = recordSectorOne;
 	}
 
-	public LocalTime getRecordSectorTwo() {
+	public LocalDateTime getRecordSectorTwo() {
 		return recordSectorTwo;
 	}
 
-	public void setRecordSectorTwo(LocalTime recordSectorTwo) {
+	public void setRecordSectorTwo(LocalDateTime recordSectorTwo) {
 		this.recordSectorTwo = recordSectorTwo;
 	}
 
-	public LocalTime getRecordSectorThree() {
+	public LocalDateTime getRecordSectorThree() {
 		return recordSectorThree;
 	}
 
-	public void setRecordSectorThree(LocalTime recordSectorThree) {
+	public void setRecordSectorThree(LocalDateTime recordSectorThree) {
 		this.recordSectorThree = recordSectorThree;
 	}
 

@@ -1,5 +1,7 @@
 package com.laurent.pcars2udp.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.apache.commons.lang3.StringUtils;
@@ -52,27 +54,31 @@ public class Pcars2UDPController {
 		// trackInProgress.getRecordSession().setCarName("Mercedes R01 GT 5");
 		// trackInProgress.getRecordSession().setClassName("Vintage");
 
-		// trackInProgress.getRecordSession().setTimeLap(LocalTime.of(0, 1, 55,
+		// trackInProgress.getRecordSession().setTimeLap(LocalDateTime.of(0, 1, 55,
 		// 76543210).minusSeconds(i++));
 		//
-		// trackInProgress.getRecordSession().setRecordSectorOne(LocalTime.of(0, 0, 19,
+		// trackInProgress.getRecordSession().setRecordSectorOne(LocalDateTime.of(0, 0,
+		// 19,
 		// 876543210).minusSeconds(i));
-		// trackInProgress.getRecordSession().setRecordSectorTwo(LocalTime.of(0, 1, 5,
+		// trackInProgress.getRecordSession().setRecordSectorTwo(LocalDateTime.of(0, 1,
+		// 5,
 		// 876543210).minusSeconds(i));
-		// trackInProgress.getRecordSession().setRecordSectorThree(LocalTime.of(0, 0,
+		// trackInProgress.getRecordSession().setRecordSectorThree(LocalDateTime.of(0,
+		// 0,
 		// 37, 876543210).minusSeconds(i));
 
-		// trackInProgress.getRecordCar().setTimeLap(LocalTime.of(0, 1, 52, 876543210));
-		// trackInProgress.getRecordCar().setTimeSectorOne(LocalTime.of(0, 0, 17,
+		// trackInProgress.getRecordCar().setTimeLap(LocalDateTime.of(0, 1, 52,
 		// 876543210));
-		// trackInProgress.getRecordCar().setTimeSectorTwo(LocalTime.of(0, 1, 1,
+		// trackInProgress.getRecordCar().setTimeSectorOne(LocalDateTime.of(0, 0, 17,
 		// 876543210));
-		// trackInProgress.getRecordCar().setTimeSectorThree(LocalTime.of(0, 0, 34,
+		// trackInProgress.getRecordCar().setTimeSectorTwo(LocalDateTime.of(0, 1, 1,
+		// 876543210));
+		// trackInProgress.getRecordCar().setTimeSectorThree(LocalDateTime.of(0, 0, 34,
 		// 876543210));
 
-		// trackInProgress.getRecordClass().setRecord(LocalTime.of(0, 1, 51,
+		// trackInProgress.getRecordClass().setRecord(LocalDateTime.of(0, 1, 51,
 		// 776543210));
-		// trackInProgress.getRecordTrack().setRecord(LocalTime.of(0, 1, 50,
+		// trackInProgress.getRecordTrack().setRecord(LocalDateTime.of(0, 1, 50,
 		// 676543210));
 		// trackInProgress.getRecordClass().setCarName("Mazda");
 		// trackInProgress.getRecordTrack().setCarName("Mercedes");
@@ -91,7 +97,7 @@ public class Pcars2UDPController {
 			// if car/track change, refresh
 			if (!StringUtils.isEmpty(participantInfo.getCarName())
 					&& !StringUtils.isEmpty(participantInfo.getTrackLocation())
-					&& !StringUtils.isEmpty(participantInfo.getTrackVariation())
+					// && !StringUtils.isEmpty(participantInfo.getTrackVariation())
 					&& (!StringUtils.equals(trackInProgress.getRecordSession().getCarName(),
 							participantInfo.getCarName())
 							|| !StringUtils.equals(trackInProgress.getRecordSession().getTrackName(),
@@ -113,13 +119,15 @@ public class Pcars2UDPController {
 			}
 
 			if (telemetryData.getBestLapTime() > 0) {
-				LocalTime bestLapSession = LocalTime.ofNanoOfDay((long) (telemetryData.getBestLapTime() * 1000000000));
-				LocalTime bestLapSessionSectorOne = LocalTime
-						.ofNanoOfDay((long) (telemetryData.getFastestSector1Time() * 1000000000));
-				LocalTime bestLapSessionSectorTwo = LocalTime
-						.ofNanoOfDay((long) (telemetryData.getFastestSector2Time() * 1000000000));
-				LocalTime bestLapSessionSectorThree = LocalTime
-						.ofNanoOfDay((long) (telemetryData.getFastestSector3Time() * 1000000000));
+				LocalDateTime bestLapSession = LocalDateTime.of(LocalDate.ofEpochDay(0),
+						LocalTime.ofNanoOfDay((long) (telemetryData.getBestLapTime() * 1000000000)));
+
+				LocalDateTime bestLapSessionSectorOne = LocalDateTime.of(LocalDate.ofEpochDay(0),
+						LocalTime.ofNanoOfDay((long) (telemetryData.getFastestSector1Time() * 1000000000)));
+				LocalDateTime bestLapSessionSectorTwo = LocalDateTime.of(LocalDate.ofEpochDay(0),
+						LocalTime.ofNanoOfDay((long) (telemetryData.getFastestSector2Time() * 1000000000)));
+				LocalDateTime bestLapSessionSectorThree = LocalDateTime.of(LocalDate.ofEpochDay(0),
+						LocalTime.ofNanoOfDay((long) (telemetryData.getFastestSector3Time() * 1000000000)));
 
 				// if best record session is beaten and it was the ancien record car, class,
 				// track, replace
@@ -156,7 +164,7 @@ public class Pcars2UDPController {
 	}
 
 	private void refreshRecordCar() {
-		trackInProgress.getRecordCar().resetTime();
+		trackInProgress.getRecordCar().reset();
 		LapRecord lapRecordCar = lapRecordRepo.findByLapKey_CarNameAndLapKey_TrackLocationAndLapKey_TrackVariation(
 				participantInfo.getCarName(), participantInfo.getTrackLocation(), participantInfo.getTrackVariation());
 
@@ -174,12 +182,13 @@ public class Pcars2UDPController {
 		record.setTimeSectorOne(lapRecord.getRecordSectorOne());
 		record.setTimeSectorTwo(lapRecord.getRecordSectorTwo());
 		record.setTimeSectorThree(lapRecord.getRecordSectorThree());
+		record.setDateRecord(lapRecord.getRecordDate());
 
 	}
 
 	private void refreshRecordClass() {
 
-		trackInProgress.getRecordClass().resetTime();
+		trackInProgress.getRecordClass().reset();
 		LapRecord lapRecordClass = lapRecordRepo
 				.findFirstByClassNameAndLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
 						participantInfo.getCarClassName(), participantInfo.getTrackLocation(),
@@ -191,7 +200,7 @@ public class Pcars2UDPController {
 	}
 
 	private void refreshRecordTrack() {
-		trackInProgress.getRecordTrack().resetTime();
+		trackInProgress.getRecordTrack().reset();
 		LapRecord lapRecordTrack = lapRecordRepo
 				.findFirstByLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
 						participantInfo.getTrackLocation(), participantInfo.getTrackVariation());

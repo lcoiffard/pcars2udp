@@ -1,5 +1,6 @@
 package com.laurent.pcars2udp.thread;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -45,7 +46,8 @@ public class SaveBestLapThread {
 			// if a best lap is done
 			if (!StringUtils.isEmpty(participantInfo.getCarName()) && telemetryData.getBestLapTime() > 0) {
 
-				LocalTime bestLapSession = LocalTime.ofNanoOfDay((long) (telemetryData.getBestLapTime() * 1000000000));
+				LocalDateTime bestLapSession = LocalDateTime.of(LocalDate.ofEpochDay(0),
+						LocalTime.ofNanoOfDay((long) (telemetryData.getBestLapTime() * 1000000000)));
 
 				if (StringUtils.isEmpty(recordCarTrack.getCarName())) {
 
@@ -67,12 +69,12 @@ public class SaveBestLapThread {
 					recordCarTrack.setUser(participantInfo.getName().get(0));
 					recordCarTrack.setDateRecord(LocalDateTime.now());
 					recordCarTrack.setRecordLap(bestLapSession);
-					LocalTime recordSectorOne = LocalTime
-							.ofNanoOfDay((long) (telemetryData.getFastestSector1Time() * 1000000000));
-					LocalTime recordSectorTwo = LocalTime
-							.ofNanoOfDay((long) (telemetryData.getFastestSector2Time() * 1000000000));
-					LocalTime recordSectorThree = LocalTime
-							.ofNanoOfDay((long) (telemetryData.getFastestSector3Time() * 1000000000));
+					LocalDateTime recordSectorOne = LocalDateTime.of(LocalDate.ofEpochDay(0),
+							LocalTime.ofNanoOfDay((long) (telemetryData.getFastestSector1Time() * 1000000000)));
+					LocalDateTime recordSectorTwo = LocalDateTime.of(LocalDate.ofEpochDay(0),
+							LocalTime.ofNanoOfDay((long) (telemetryData.getFastestSector2Time() * 1000000000)));
+					LocalDateTime recordSectorThree = LocalDateTime.of(LocalDate.ofEpochDay(0),
+							LocalTime.ofNanoOfDay((long) (telemetryData.getFastestSector3Time() * 1000000000)));
 					recordCarTrack.setRecordSectorOne(recordSectorOne);
 					recordCarTrack.setRecordSectorTwo(recordSectorTwo);
 					recordCarTrack.setRecordSectorThree(recordSectorThree);

@@ -97,64 +97,66 @@
                         </div>
                      </div>
                      <div class="row" >
-                        <div class="col-lg-3" >
+                        <div class="col-lg-6" >
                            <div class="info-box">
                               <span class="info-box-icon bg-aqua"><i class="fa fa-user"></i></span>
                               <div class="info-box-content">
-                                 <span class="info-box-text" style="font-size:12px">Record session</span>
+                                 <span class="info-box-text" style="font-size:12px">Best session lap</span>
                                  <span class="info-box-number" style="font-size:14px" th:text="${trackInProgress.recordSession.timeLap} ? ${#temporals.format(trackInProgress.recordSession.timeLap,'mm:ss.SSS')} : '--:--.---'"/>              
                               </div>
                               <!-- /.info-box-content -->
                            </div>
-                        </div>
-                        <div class="col-lg-3" >
+                        </div>    
+                        <div class="col-lg-6" >
                            <div class="info-box">
                               <span class="info-box-icon" th:classappend="${trackInProgress.recordCar.isTimeBeaten(trackInProgress.recordSession.timeLap)} ? bg-green : bg-yellow">
                               <i class="fa" th:classappend="${trackInProgress.recordCar.isTimeBeaten(trackInProgress.recordSession.timeLap)} ? fa-thumbs-o-up : fa-car"></i>
                               </span>
                               <div class="info-box-content">
-                                 <span class="info-box-text" style="font-size:12px">Record car</span>
+                                 <span class="info-box-text" style="font-size:12px">Car record</span>
                                  <span class="info-box-number" style="font-size:14px"  th:text="${trackInProgress.recordCar.timeLap} ? ${#temporals.format(trackInProgress.recordCar.timeLap,'mm:ss.SSS')} : '--:--.---'"/>
                                  <span class="badge" style="width: 98%" th:classappend="${trackInProgress.recordCar.isTimeBeaten(trackInProgress.recordSession.timeLap)} ? bg-green : bg-red" th:text="${trackInProgress.recordCar.getDiffTime(trackInProgress.recordSession.timeLap)}"/>
                                  <div>
                                     <span class="badge" style="width: 32%" th:classappend="${trackInProgress.recordCar.isSectorOneBeaten(trackInProgress.recordSession.timeSectorOne)} ? bg-green : bg-red" th:text="${trackInProgress.recordCar.getDiffSectorOne(trackInProgress.recordSession.timeSectorOne)}"/>
-                                    <span class="badge" style="width: 32%" th:classappend="${trackInProgress.recordCar.isSectorTwoBeaten(trackInProgress.recordSession.timeSectorTwo)} ? bg-green : bg-red" th:text="${trackInProgress.recordCar.getDiffSectorTwo(trackInProgress.recordSession.timeSectorTwo)}"/>
+                                    <span class="badge" style="width: 33%" th:classappend="${trackInProgress.recordCar.isSectorTwoBeaten(trackInProgress.recordSession.timeSectorTwo)} ? bg-green : bg-red" th:text="${trackInProgress.recordCar.getDiffSectorTwo(trackInProgress.recordSession.timeSectorTwo)}"/>
                                     <span class="badge" style="width: 32%" th:classappend="${trackInProgress.recordCar.isSectorThreeBeaten(trackInProgress.recordSession.timeSectorThree)} ? bg-green : bg-red" th:text="${trackInProgress.recordCar.getDiffSectorThree(trackInProgress.recordSession.timeSectorThree)}"/>
                                  </div>
                               </div>
                               <!-- /.info-box-content -->                            
                            </div>                            
                         </div>
-                        <div class="col-lg-3" >
-                           <div class="info-box">
-                              <span class="info-box-icon" th:classappend="${trackInProgress.recordClass.isTimeBeaten(trackInProgress.recordSession.timeLap)} ? bg-green : bg-purple">
+                     </div>                     
+                     <div class="row" >
+                        <div class="col-lg-6" >
+                           <div class="info-box" >
+                              <span class="info-box-icon"  th:classappend="${trackInProgress.recordClass.isTimeBeaten(trackInProgress.recordSession.timeLap)} ? bg-green : bg-purple">
                               <i class="fa" th:classappend="${trackInProgress.recordClass.isTimeBeaten(trackInProgress.recordSession.timeLap)} ? fa-thumbs-o-up : fa-trophy"></i>
                               </span>
                               <div class="info-box-content">
-                                 <span class="info-box-text" style="font-size:12px" th:text="${'Record class' + (trackInProgress.recordClass.carName != null ? ' (' + trackInProgress.recordClass.carName +')' : '')}"/>
+                                 <span class="info-box-text" style="font-size:12px" th:text="${'Class record' + (trackInProgress.recordClass.carName != null ? ' (' + trackInProgress.recordClass.carName + ')' : '')}"/>
                                  <span class="info-box-number" style="font-size:14px"  th:text="${trackInProgress.recordClass.timeLap} ? ${#temporals.format(trackInProgress.recordClass.timeLap,'mm:ss.SSS')} : '--:--.---'"/>
                                  <span class="badge" style="width: 98%" th:classappend="${trackInProgress.recordClass.isTimeBeaten(trackInProgress.recordSession.timeLap)} ? bg-green : bg-red" th:text="${trackInProgress.recordClass.getDiffTime(trackInProgress.recordSession.timeLap)}"/>
                                  <div>
-                                    <span class="badge" style="width: 32%" th:classappend="${trackInProgress.recordClass.isSectorOneBeaten(trackInProgress.recordSession.timeSectorOne)} ? bg-green : bg-red" th:text="${trackInProgress.recordClass.getDiffSectorOne(trackInProgress.recordSession.timeSectorOne)}"/>
-                                    <span class="badge" style="width: 32%" th:classappend="${trackInProgress.recordClass.isSectorTwoBeaten(trackInProgress.recordSession.timeSectorTwo)} ? bg-green : bg-red" th:text="${trackInProgress.recordClass.getDiffSectorTwo(trackInProgress.recordSession.timeSectorTwo)}"/>
+                                    <span class="badge" style="width: 33%" th:classappend="${trackInProgress.recordClass.isSectorOneBeaten(trackInProgress.recordSession.timeSectorOne)} ? bg-green : bg-red" th:text="${trackInProgress.recordClass.getDiffSectorOne(trackInProgress.recordSession.timeSectorOne)}"/>
+                                    <span class="badge" style="width: 33%" th:classappend="${trackInProgress.recordClass.isSectorTwoBeaten(trackInProgress.recordSession.timeSectorTwo)} ? bg-green : bg-red" th:text="${trackInProgress.recordClass.getDiffSectorTwo(trackInProgress.recordSession.timeSectorTwo)}"/>
                                     <span class="badge" style="width: 32%" th:classappend="${trackInProgress.recordClass.isSectorThreeBeaten(trackInProgress.recordSession.timeSectorThree)} ? bg-green : bg-red" th:text="${trackInProgress.recordClass.getDiffSectorThree(trackInProgress.recordSession.timeSectorThree)}"/>
                                  </div>
                               </div>
                               <!-- /.info-box-content -->
                            </div>                         
                         </div>
-                        <div class="col-lg-3" >
+                        <div class="col-lg-6" >
                            <div class="info-box">
                               <span class="info-box-icon" th:classappend="${trackInProgress.recordTrack.isTimeBeaten(trackInProgress.recordSession.timeLap)} ? bg-green : bg-black">
                               <i class="fa" th:classappend="${trackInProgress.recordTrack.isTimeBeaten(trackInProgress.recordSession.timeLap)} ? fa-thumbs-o-up : fa-star"></i>
                               </span>
                               <div class="info-box-content">
-                                 <span class="info-box-text" style="font-size:12px" th:text="${'Record track' + (trackInProgress.recordTrack.labelCar != null ? ' (' + trackInProgress.recordTrack.labelCar +')' : '')}"/>
+                                 <span class="info-box-text" style="font-size:12px" th:text="${'Track record' + (trackInProgress.recordTrack.labelCar != null ? ' (' + trackInProgress.recordTrack.labelCar +')' : '')}"/>
                                  <span class="info-box-number" style="font-size:14px" th:text="${trackInProgress.recordTrack.timeLap} ? ${#temporals.format(trackInProgress.recordTrack.timeLap,'mm:ss.SSS')} : '--:--.---'"/>
                                  <span class="badge" style="width: 98%" th:classappend="${trackInProgress.recordTrack.isTimeBeaten(trackInProgress.recordSession.timeLap)} ? bg-green : bg-red" th:text="${trackInProgress.recordTrack.getDiffTime(trackInProgress.recordSession.timeLap)}"/>
                                  <div>
                                     <span class="badge" style="width: 32%" th:classappend="${trackInProgress.recordTrack.isSectorOneBeaten(trackInProgress.recordSession.timeSectorOne)} ? bg-green : bg-red" th:text="${trackInProgress.recordTrack.getDiffSectorOne(trackInProgress.recordSession.timeSectorOne)}"/>
-                                    <span class="badge" style="width: 32%" th:classappend="${trackInProgress.recordTrack.isSectorTwoBeaten(trackInProgress.recordSession.timeSectorTwo)} ? bg-green : bg-red" th:text="${trackInProgress.recordTrack.getDiffSectorTwo(trackInProgress.recordSession.timeSectorTwo)}"/>
+                                    <span class="badge" style="width: 33%" th:classappend="${trackInProgress.recordTrack.isSectorTwoBeaten(trackInProgress.recordSession.timeSectorTwo)} ? bg-green : bg-red" th:text="${trackInProgress.recordTrack.getDiffSectorTwo(trackInProgress.recordSession.timeSectorTwo)}"/>
                                     <span class="badge" style="width: 32%" th:classappend="${trackInProgress.recordTrack.isSectorThreeBeaten(trackInProgress.recordSession.timeSectorThree)} ? bg-green : bg-red" th:text="${trackInProgress.recordTrack.getDiffSectorThree(trackInProgress.recordSession.timeSectorThree)}"/>
                                  </div>
                               </div>

@@ -1,7 +1,7 @@
 package com.laurent.pcars2udp.dto;
 
 import java.time.Duration;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
@@ -13,10 +13,12 @@ public class TimeLap implements Cloneable {
 	private String carName;
 	private String className;
 
-	private LocalTime timeLap;
-	private LocalTime timeSectorOne;
-	private LocalTime timeSectorTwo;
-	private LocalTime timeSectorThree;
+	private LocalDateTime timeLap;
+	private LocalDateTime timeSectorOne;
+	private LocalDateTime timeSectorTwo;
+	private LocalDateTime timeSectorThree;
+
+	private LocalDateTime dateRecord;
 
 	public String getTrackName() {
 		return trackName;
@@ -50,76 +52,76 @@ public class TimeLap implements Cloneable {
 		this.className = className;
 	}
 
-	public LocalTime getTimeLap() {
+	public LocalDateTime getTimeLap() {
 		return timeLap;
 	}
 
-	public void setTimeLap(LocalTime timeLap) {
+	public void setTimeLap(LocalDateTime timeLap) {
 		this.timeLap = timeLap;
 	}
 
-	public LocalTime getTimeSectorOne() {
+	public LocalDateTime getTimeSectorOne() {
 		return timeSectorOne;
 	}
 
-	public void setTimeSectorOne(LocalTime timeSectorOne) {
+	public void setTimeSectorOne(LocalDateTime timeSectorOne) {
 		this.timeSectorOne = timeSectorOne;
 	}
 
-	public LocalTime getTimeSectorTwo() {
+	public LocalDateTime getTimeSectorTwo() {
 		return timeSectorTwo;
 	}
 
-	public void setTimeSectorTwo(LocalTime timeSectorTwo) {
+	public void setTimeSectorTwo(LocalDateTime timeSectorTwo) {
 		this.timeSectorTwo = timeSectorTwo;
 	}
 
-	public LocalTime getTimeSectorThree() {
+	public LocalDateTime getTimeSectorThree() {
 		return timeSectorThree;
 	}
 
-	public void setTimeSectorThree(LocalTime timeSectorThree) {
+	public void setTimeSectorThree(LocalDateTime timeSectorThree) {
 		this.timeSectorThree = timeSectorThree;
 	}
 
-	public Boolean isTimeBeaten(LocalTime time) {
+	public Boolean isTimeBeaten(LocalDateTime time) {
 		return isBeaten(time, this.timeLap);
 	}
 
-	public String getDiffTime(LocalTime time) {
+	public String getDiffTime(LocalDateTime time) {
 		return getStringDiff(time, this.timeLap);
 	}
 
-	public Boolean isSectorOneBeaten(LocalTime time) {
+	public Boolean isSectorOneBeaten(LocalDateTime time) {
 		return isBeaten(time, this.timeSectorOne);
 	}
 
-	public String getDiffSectorOne(LocalTime time) {
+	public String getDiffSectorOne(LocalDateTime time) {
 		return getStringDiff(time, this.timeSectorOne);
 	}
 
-	public Boolean isSectorTwoBeaten(LocalTime time) {
+	public Boolean isSectorTwoBeaten(LocalDateTime time) {
 		return isBeaten(time, this.timeSectorTwo);
 	}
 
-	public String getDiffSectorTwo(LocalTime time) {
+	public String getDiffSectorTwo(LocalDateTime time) {
 		return getStringDiff(time, this.timeSectorTwo);
 	}
 
-	public Boolean isSectorThreeBeaten(LocalTime time) {
+	public Boolean isSectorThreeBeaten(LocalDateTime time) {
 		return isBeaten(time, this.timeSectorThree);
 	}
 
-	public String getDiffSectorThree(LocalTime time) {
+	public String getDiffSectorThree(LocalDateTime time) {
 		return getStringDiff(time, this.timeSectorThree);
 	}
 
-	public Boolean isBeaten(LocalTime time, LocalTime timeToBeat) {
+	public Boolean isBeaten(LocalDateTime time, LocalDateTime timeToBeat) {
 		return (time != null && timeToBeat == null)
 				|| (time != null && timeToBeat != null && time.isBefore(timeToBeat));
 	}
 
-	public String getStringDiff(LocalTime time, LocalTime timeToBeat) {
+	public String getStringDiff(LocalDateTime time, LocalDateTime timeToBeat) {
 		String diffString = null;
 		if (time != null && timeToBeat != null) {
 			Duration diff = Duration.between(timeToBeat, time);
@@ -160,6 +162,7 @@ public class TimeLap implements Cloneable {
 		this.timeSectorOne = null;
 		this.timeSectorTwo = null;
 		this.timeSectorThree = null;
+		this.dateRecord = null;
 	}
 
 	public void resetTime() {
@@ -179,6 +182,14 @@ public class TimeLap implements Cloneable {
 		}
 
 		return clone;
+	}
+
+	public LocalDateTime getDateRecord() {
+		return dateRecord;
+	}
+
+	public void setDateRecord(LocalDateTime dateRecord) {
+		this.dateRecord = dateRecord;
 	}
 
 }

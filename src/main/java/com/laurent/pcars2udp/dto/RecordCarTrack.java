@@ -1,7 +1,6 @@
 package com.laurent.pcars2udp.dto;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import org.springframework.stereotype.Component;
 
@@ -12,10 +11,10 @@ public class RecordCarTrack {
 	private String trackVariation;
 	private String carName;
 	private String carClass;
-	private LocalTime recordLap;
-	private LocalTime recordSectorOne;
-	private LocalTime recordSectorTwo;
-	private LocalTime recordSectorThree;
+	private LocalDateTime recordLap;
+	private LocalDateTime recordSectorOne;
+	private LocalDateTime recordSectorTwo;
+	private LocalDateTime recordSectorThree;
 	private LocalDateTime dateRecord;
 
 	public String getUser() {
@@ -58,11 +57,11 @@ public class RecordCarTrack {
 		this.carClass = carClass;
 	}
 
-	public LocalTime getRecordLap() {
+	public LocalDateTime getRecordLap() {
 		return recordLap;
 	}
 
-	public void setRecordLap(LocalTime recordLap) {
+	public void setRecordLap(LocalDateTime recordLap) {
 		this.recordLap = recordLap;
 	}
 
@@ -74,27 +73,27 @@ public class RecordCarTrack {
 		this.dateRecord = dateRecord;
 	}
 
-	public LocalTime getRecordSectorOne() {
+	public LocalDateTime getRecordSectorOne() {
 		return recordSectorOne;
 	}
 
-	public void setRecordSectorOne(LocalTime recordSectorOne) {
+	public void setRecordSectorOne(LocalDateTime recordSectorOne) {
 		this.recordSectorOne = recordSectorOne;
 	}
 
-	public LocalTime getRecordSectorTwo() {
+	public LocalDateTime getRecordSectorTwo() {
 		return recordSectorTwo;
 	}
 
-	public void setRecordSectorTwo(LocalTime recordSectorTwo) {
+	public void setRecordSectorTwo(LocalDateTime recordSectorTwo) {
 		this.recordSectorTwo = recordSectorTwo;
 	}
 
-	public LocalTime getRecordSectorThree() {
+	public LocalDateTime getRecordSectorThree() {
 		return recordSectorThree;
 	}
 
-	public void setRecordSectorThree(LocalTime recordSectorThree) {
+	public void setRecordSectorThree(LocalDateTime recordSectorThree) {
 		this.recordSectorThree = recordSectorThree;
 	}
 }
