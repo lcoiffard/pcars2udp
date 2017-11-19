@@ -8,15 +8,16 @@
  <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.7.RELEASE</version>
+        <version>1.5.8.RELEASE</version>
     </parent>
+    
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
-				<version>5.2.0.Final</version>
+				<version>5.2.10.Final</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -47,7 +48,11 @@
 		    <artifactId>commons-lang3</artifactId>
 		    <version>3.6</version>
 		</dependency>		
-       
+      
+		<dependency>
+		        <groupId>com.fasterxml.jackson.datatype</groupId>
+		        <artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>				
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -62,7 +67,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-    </properties>
+   </properties>
 
 
     <build>

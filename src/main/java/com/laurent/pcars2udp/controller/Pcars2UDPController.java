@@ -3,11 +3,18 @@ package com.laurent.pcars2udp.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -15,8 +22,12 @@ import com.laurent.pcars2udp.dto.ParticipantInfo;
 import com.laurent.pcars2udp.dto.TelemetryData;
 import com.laurent.pcars2udp.dto.TimeLap;
 import com.laurent.pcars2udp.dto.TrackInProgress;
+import com.laurent.pcars2udp.entity.Car;
 import com.laurent.pcars2udp.entity.LapRecord;
+import com.laurent.pcars2udp.entity.Track;
+import com.laurent.pcars2udp.repo.CarRepo;
 import com.laurent.pcars2udp.repo.LapRecordRepo;
+import com.laurent.pcars2udp.repo.TrackRepo;
 
 @Controller
 public class Pcars2UDPController {
@@ -31,21 +42,70 @@ public class Pcars2UDPController {
 	private LapRecordRepo lapRecordRepo;
 
 	@Autowired
+	private CarRepo carRepo;
+
+	@Autowired
+	private TrackRepo trackRepo;
+
+	@Autowired
 	private TrackInProgress trackInProgress;
 
 	int i = 0;
+
+	@ModelAttribute("carList")
+	public List<Car> getCarList() {
+		return carRepo.findAllByOrderByCarName();
+	}
+
+	@ModelAttribute("classList")
+	public List<String> getClassList() {
+		return carRepo.findAllClassByOrderByClassName();
+	}
+
+	@ModelAttribute("trackList")
+	public List<Track> getTrackList() {
+		return trackRepo.findAllByOrderByTrackLocationAscTrackVariationAsc();
+	}
+
+	@RequestMapping(value = "/getRecords", method = RequestMethod.POST)
+	public String getLapRecord(Long idCar, String className, Long idTrack, Model model) {
+
+		Page<LapRecord> records = null;
+
+		if (idCar != null || !StringUtils.isEmpty(className) || idTrack != null) {
+
+			LapRecord lapRecord = new LapRecord();
+			lapRecord.setCar(new Car());
+			lapRecord.getCar().setId(idCar);
+			lapRecord.getCar().setClassName(StringUtils.isEmpty(className) ? null : className);
+			lapRecord.setTrack(new Track());
+			lapRecord.getTrack().setId(idTrack);
+
+			ExampleMatcher matcher = ExampleMatcher.matching();
+
+			Example<LapRecord> example = Example.of(lapRecord, matcher);
+
+			records = lapRecordRepo.findAll(example, new PageRequest(0, 50, new Sort(Sort.Direction.ASC, "recordLap")));
+		}
+
+		model.addAttribute("recordsList", records);
+
+		return "pcars2udp :: records";
+	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
 		refreshTrackInProgress();
 
 		model.addAttribute(trackInProgress);
+
 		return "pcars2udp";
 	}
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
 	public String refresh(Model model) {
 		refreshTrackInProgress();
+
 		// Util for mock
 
 		// trackInProgress.getRecordSession().setTrackName("Aerordromo international
@@ -165,7 +225,7 @@ public class Pcars2UDPController {
 
 	private void refreshRecordCar() {
 		trackInProgress.getRecordCar().reset();
-		LapRecord lapRecordCar = lapRecordRepo.findByLapKey_CarNameAndLapKey_TrackLocationAndLapKey_TrackVariation(
+		LapRecord lapRecordCar = lapRecordRepo.findByCar_CarNameAndTrack_TrackLocationAndTrack_TrackVariation(
 				participantInfo.getCarName(), participantInfo.getTrackLocation(), participantInfo.getTrackVariation());
 
 		if (lapRecordCar != null) {
@@ -174,10 +234,10 @@ public class Pcars2UDPController {
 	}
 
 	private void refreshRecord(TimeLap record, LapRecord lapRecord) {
-		record.setTrackName(lapRecord.getLapKey().getTrackLocation());
-		record.setTrackVariation(lapRecord.getLapKey().getTrackVariation());
-		record.setCarName(lapRecord.getLapKey().getCarName());
-		record.setClassName(lapRecord.getClassName());
+		record.setTrackName(lapRecord.getTrack().getTrackLocation());
+		record.setTrackVariation(lapRecord.getTrack().getTrackVariation());
+		record.setCarName(lapRecord.getCar().getCarName());
+		record.setClassName(lapRecord.getCar().getClassName());
 		record.setTimeLap(lapRecord.getRecordLap());
 		record.setTimeSectorOne(lapRecord.getRecordSectorOne());
 		record.setTimeSectorTwo(lapRecord.getRecordSectorTwo());
@@ -190,7 +250,7 @@ public class Pcars2UDPController {
 
 		trackInProgress.getRecordClass().reset();
 		LapRecord lapRecordClass = lapRecordRepo
-				.findFirstByClassNameAndLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
+				.findFirstByCar_ClassNameAndTrack_TrackLocationAndTrack_TrackVariationOrderByRecordLapAsc(
 						participantInfo.getCarClassName(), participantInfo.getTrackLocation(),
 						participantInfo.getTrackVariation());
 
@@ -202,10 +262,11 @@ public class Pcars2UDPController {
 	private void refreshRecordTrack() {
 		trackInProgress.getRecordTrack().reset();
 		LapRecord lapRecordTrack = lapRecordRepo
-				.findFirstByLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
+				.findFirstByTrack_TrackLocationAndTrack_TrackVariationOrderByRecordLapAsc(
 						participantInfo.getTrackLocation(), participantInfo.getTrackVariation());
 		if (lapRecordTrack != null) {
 			refreshRecord(trackInProgress.getRecordTrack(), lapRecordTrack);
 		}
 	}
+
 }

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RecordCarTrack {
-	private String user;
 	private String trackName;
 	private String trackVariation;
 	private String carName;
@@ -16,14 +15,6 @@ public class RecordCarTrack {
 	private LocalDateTime recordSectorTwo;
 	private LocalDateTime recordSectorThree;
 	private LocalDateTime dateRecord;
-
-	public String getUser() {
-		return user;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
-	}
 
 	public String getTrackName() {
 		return trackName;

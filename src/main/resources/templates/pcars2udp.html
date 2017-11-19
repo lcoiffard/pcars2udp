@@ -17,6 +17,9 @@
       <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css"/>
       <!-- Theme style -->
       <link rel="stylesheet" href="dist/css/AdminLTE.min.css"/>
+  
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css"/>      
       <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
          page. However, you can choose any other skin. Make sure you
          apply the skin class to the body tag so the changes take effect. -->
@@ -163,9 +166,85 @@
                               <!-- /.info-box-content -->
                            </div>                          
                         </div>
-                     </div>
-                  </div>
+                     </div>                     
+                  </div>                
                </div>
+               
+
+               
+
+              	<div class="row">
+              		<div class="box">
+              			<div class="box-header">
+              		 		<div class="row">
+              		 			<div class="col-lg-3" >       
+              		 				<h3 class="box-title">Records list</h3>
+              		 				</div>
+              		 			</div>
+				               <div class="row">
+				               		<div class="col-lg-3" >              
+						               <select class="form-control" id="idCar">
+										  <option value="">Choose a car</option>		               
+										  <option th:each="car : ${carList}" 
+										          th:value="${car.id}" 
+										          th:text="${car.carName}"/>
+										</select>               
+									</div>     
+									<div class="col-lg-3" >              
+						               <select class="form-control" id="className">
+						                  <option value="">Choose a class</option>		
+										  <option th:each="classe : ${classList}" 
+										          th:value="${classe}" 
+										          th:text="${classe}"/>
+										</select>               
+									</div>   
+									<div class="col-lg-3" >              
+						               <select class="form-control" id="idTrack">
+						                  <option value="">Choose a track</option>		
+										  <option th:each="track : ${trackList}" 
+										          th:value="${track.id}" 
+										          th:text="${track.trackLocation + (!#strings.isEmpty(track.trackVariation) ? ' / ' + track.trackVariation : '')}"/>
+										</select>               
+									</div >
+									<div class="col-lg-3"><button type="button" class="btn btn-block btn-primary" id="refreshRecords">Refresh records</button></div>  
+				               </div>                		 			
+              		 		</div>
+              		 		<div class="box-body">
+				               <div id="records" >
+				                  <div th:fragment="records" class="datatables_wrapper form-inline dt-bootstrap">              		 		
+									<table id="sample" class="table table-bordered table-hover dataTable" role="grid">
+										<thead>
+											<tr row="row">
+												<th class="col-lg-3">Car name</th>
+												<th class="col-lg-3">Class name</th>
+												<th class="col-lg-3">Track name</th>
+												<th class="col-lg-3">Lap record</th>
+											</tr>
+										</thead>
+										
+										<tbody th:if="${#lists.isEmpty(recordsList) || recordsList.getTotalElements() == 0}">
+											<tr role="row" class="odd"><td colspan="4" >No records</td></tr>
+										
+										</tbody>
+										
+											
+								    	<tbody:block th:each="record : ${recordsList}">
+									    	<tr role="row" class="odd">
+									        	<td th:text="${record.car.carName}"/>
+									        	<td th:text="${record.car.className}"/>
+									        	<td th:text="${record.track.trackLocation + (!#strings.isEmpty(record.track.trackVariation) ? ' / ' + record.track.trackVariation : '')}"/>
+									        	<td th:text="${#temporals.format(record.recordLap,'mm:ss.SSS')}"/>
+									    	</tr>
+										</tbody:block>										
+										
+									</table>                 		 		
+              		 			</div>
+							</div>                         
+               			</div>                  
+                  	</div>
+                </div>
+
+               
                <!--
                   | Your Page Content Here |
                   -->
@@ -186,6 +265,15 @@
       <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
       <!-- AdminLTE App -->
       <script src="dist/js/adminlte.min.js"></script>
+
+<!-- Bootstrap 3.3.7 -->
+<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>      
+
       <script src="pcarsudp.js"></script>
       <!-- Optionally, you can add Slimscroll and FastClick plugins.
          Both of these plugins are recommended to enhance the

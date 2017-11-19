@@ -7,12 +7,13 @@ import com.laurent.pcars2udp.entity.LapRecord;
 
 public interface LapRecordRepo extends JpaRepository<LapRecord, LapKey> {
 
-	public LapRecord findByLapKey_CarNameAndLapKey_TrackLocationAndLapKey_TrackVariation(String carName,
+	public LapRecord findByCar_CarNameAndTrack_TrackLocationAndTrack_TrackVariation(String carName,
 			String trackLocation, String trackVariation);
 
-	public LapRecord findFirstByClassNameAndLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(
+	public LapRecord findFirstByCar_ClassNameAndTrack_TrackLocationAndTrack_TrackVariationOrderByRecordLapAsc(
 			String carClass, String trackLocation, String trackVariation);
 
-	public LapRecord findFirstByLapKey_TrackLocationAndLapKey_TrackVariationOrderByRecordLapAsc(String trackLocation,
+	public LapRecord findFirstByTrack_TrackLocationAndTrack_TrackVariationOrderByRecordLapAsc(String trackLocation,
 			String trackVariation);
+
 }

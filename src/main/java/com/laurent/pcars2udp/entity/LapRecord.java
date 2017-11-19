@@ -5,22 +5,24 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Index;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 @Entity
-@Table(indexes = { @Index(name = "IDX_RECORD_CLASS", columnList = "className,trackLocation,trackVariation"),
-		@Index(name = "IDX_RECORD_TRACK", columnList = "trackLocation,trackVariation") })
+@Table(name = "LAP_RECORD")
 public class LapRecord {
 
 	@EmbeddedId
 	private LapKey lapKey;
 
-	@Column
-	private String userPs4;
+	@ManyToOne
+	@MapsId("carId")
+	private Car car;
 
-	@Column
-	private String className;
+	@ManyToOne
+	@MapsId("trackId")
+	private Track track;
 
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime recordLap;
@@ -29,13 +31,13 @@ public class LapRecord {
 	private LocalDateTime recordDate;
 
 	@Column(columnDefinition = "TIMESTAMP")
-	LocalDateTime recordSectorOne;
+	private LocalDateTime recordSectorOne;
 
 	@Column(columnDefinition = "TIMESTAMP")
-	LocalDateTime recordSectorTwo;
+	private LocalDateTime recordSectorTwo;
 
 	@Column(columnDefinition = "TIMESTAMP")
-	LocalDateTime recordSectorThree;
+	private LocalDateTime recordSectorThree;
 
 	public LocalDateTime getRecordLap() {
 		return recordLap;
@@ -61,22 +63,6 @@ public class LapRecord {
 		this.recordDate = recordDate;
 	}
 
-	public String getUserPs4() {
-		return userPs4;
-	}
-
-	public void setUserPs4(String userPs4) {
-		this.userPs4 = userPs4;
-	}
-
-	public String getClassName() {
-		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
-	}
-
 	public LocalDateTime getRecordSectorOne() {
 		return recordSectorOne;
 	}
@@ -99,6 +85,22 @@ public class LapRecord {
 
 	public void setRecordSectorThree(LocalDateTime recordSectorThree) {
 		this.recordSectorThree = recordSectorThree;
+	}
+
+	public Car getCar() {
+		return car;
+	}
+
+	public void setCar(Car car) {
+		this.car = car;
+	}
+
+	public Track getTrack() {
+		return track;
+	}
+
+	public void setTrack(Track track) {
+		this.track = track;
 	}
 
 }

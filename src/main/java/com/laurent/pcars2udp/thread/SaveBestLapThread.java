@@ -51,10 +51,9 @@ public class SaveBestLapThread {
 
 				if (StringUtils.isEmpty(recordCarTrack.getCarName())) {
 
-					LapRecord lapRecord = lapRecordRepo
-							.findByLapKey_CarNameAndLapKey_TrackLocationAndLapKey_TrackVariation(
-									participantInfo.getCarName(), participantInfo.getTrackLocation(),
-									participantInfo.getTrackVariation());
+					LapRecord lapRecord = lapRecordRepo.findByCar_CarNameAndTrack_TrackLocationAndTrack_TrackVariation(
+							participantInfo.getCarName(), participantInfo.getTrackLocation(),
+							participantInfo.getTrackVariation());
 					if (lapRecord != null) {
 						recordCarTrack = recordCarTrackAdapter.convertToRecordCar(lapRecord);
 					} else {
@@ -66,7 +65,6 @@ public class SaveBestLapThread {
 				if (recordCarTrack.getRecordLap() == null || recordCarTrack.getRecordLap().isAfter(bestLapSession)) {
 
 					recordCarTrack.setCarClass(participantInfo.getCarClassName());
-					recordCarTrack.setUser(participantInfo.getName().get(0));
 					recordCarTrack.setDateRecord(LocalDateTime.now());
 					recordCarTrack.setRecordLap(bestLapSession);
 					LocalDateTime recordSectorOne = LocalDateTime.of(LocalDate.ofEpochDay(0),
@@ -89,7 +87,6 @@ public class SaveBestLapThread {
 			recordCarTrack.setTrackName(null);
 			recordCarTrack.setTrackVariation(null);
 			recordCarTrack.setCarClass(null);
-			recordCarTrack.setUser(null);
 			recordCarTrack.setDateRecord(null);
 			recordCarTrack.setRecordLap(null);
 			recordCarTrack.setRecordSectorOne(null);
