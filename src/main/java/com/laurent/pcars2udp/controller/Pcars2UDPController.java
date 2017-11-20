@@ -3,7 +3,6 @@ package com.laurent.pcars2udp.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.laurent.pcars2udp.dto.ParticipantInfo;
 import com.laurent.pcars2udp.dto.TelemetryData;
@@ -30,6 +29,7 @@ import com.laurent.pcars2udp.repo.LapRecordRepo;
 import com.laurent.pcars2udp.repo.TrackRepo;
 
 @Controller
+@SessionAttributes({ "carList", "classList", "trackList" })
 public class Pcars2UDPController {
 
 	@Autowired
@@ -51,21 +51,6 @@ public class Pcars2UDPController {
 	private TrackInProgress trackInProgress;
 
 	int i = 0;
-
-	@ModelAttribute("carList")
-	public List<Car> getCarList() {
-		return carRepo.findAllByOrderByCarName();
-	}
-
-	@ModelAttribute("classList")
-	public List<String> getClassList() {
-		return carRepo.findAllClassByOrderByClassName();
-	}
-
-	@ModelAttribute("trackList")
-	public List<Track> getTrackList() {
-		return trackRepo.findAllByOrderByTrackLocationAscTrackVariationAsc();
-	}
 
 	@RequestMapping(value = "/getRecords", method = RequestMethod.POST)
 	public String getLapRecord(Long idCar, String className, Long idTrack, Model model) {
@@ -98,6 +83,9 @@ public class Pcars2UDPController {
 		refreshTrackInProgress();
 
 		model.addAttribute(trackInProgress);
+		model.addAttribute("carList", carRepo.findAllByOrderByCarName());
+		model.addAttribute("classList", carRepo.findAllClassByOrderByClassName());
+		model.addAttribute("trackList", trackRepo.findAllByOrderByTrackLocationAscTrackVariationAsc());
 
 		return "pcars2udp";
 	}

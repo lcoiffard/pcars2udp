@@ -15,14 +15,16 @@ setInterval(function(){
 }, 5000)
 
 
+
+
 function loadrecords(){
 	var url = window.location;
 	
-    $('#records').load(url+'/getRecords', {idCar:$('#idCar option:selected').val(), className:$('#className option:selected').val(), idTrack:$('#idTrack option:selected').val()});
+    $('#records').load(url+'/getRecords', {idCar:$('#idCar option:selected').val(), className:$('#className option:selected').val(), idTrack:$('#idTrack option:selected').val()}, function() {
+    	
+    });
       
 }
-
-
 
 
 $('#idCar').change(function() {
@@ -41,4 +43,5 @@ $('#idTrack').change( function() {
 
 $('#refreshRecords').click(function() {
 	loadrecords();
-});
+})
+
