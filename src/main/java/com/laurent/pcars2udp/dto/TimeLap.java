@@ -3,9 +3,11 @@ package com.laurent.pcars2udp.dto;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
+@Data
 public class TimeLap implements Cloneable {
 
 	private String trackName;
@@ -20,69 +22,7 @@ public class TimeLap implements Cloneable {
 
 	private LocalDateTime dateRecord;
 
-	public String getTrackName() {
-		return trackName;
-	}
 
-	public void setTrackName(String trackName) {
-		this.trackName = trackName;
-	}
-
-	public String getTrackVariation() {
-		return trackVariation;
-	}
-
-	public void setTrackVariation(String trackVariation) {
-		this.trackVariation = trackVariation;
-	}
-
-	public String getCarName() {
-		return carName;
-	}
-
-	public void setCarName(String carName) {
-		this.carName = carName;
-	}
-
-	public String getClassName() {
-		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
-	}
-
-	public LocalDateTime getTimeLap() {
-		return timeLap;
-	}
-
-	public void setTimeLap(LocalDateTime timeLap) {
-		this.timeLap = timeLap;
-	}
-
-	public LocalDateTime getTimeSectorOne() {
-		return timeSectorOne;
-	}
-
-	public void setTimeSectorOne(LocalDateTime timeSectorOne) {
-		this.timeSectorOne = timeSectorOne;
-	}
-
-	public LocalDateTime getTimeSectorTwo() {
-		return timeSectorTwo;
-	}
-
-	public void setTimeSectorTwo(LocalDateTime timeSectorTwo) {
-		this.timeSectorTwo = timeSectorTwo;
-	}
-
-	public LocalDateTime getTimeSectorThree() {
-		return timeSectorThree;
-	}
-
-	public void setTimeSectorThree(LocalDateTime timeSectorThree) {
-		this.timeSectorThree = timeSectorThree;
-	}
 
 	public Boolean isTimeBeaten(LocalDateTime time) {
 		return isBeaten(time, this.timeLap);
@@ -184,12 +124,6 @@ public class TimeLap implements Cloneable {
 		return clone;
 	}
 
-	public LocalDateTime getDateRecord() {
-		return dateRecord;
-	}
 
-	public void setDateRecord(LocalDateTime dateRecord) {
-		this.dateRecord = dateRecord;
-	}
 
 }
