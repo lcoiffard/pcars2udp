@@ -46,7 +46,7 @@ public class BufferByteUtils {
 	}
 
 	public List<String> getListString(byte[] data, int offset, int arraySize, int length) {
-		List<String> liste = new ArrayList<String>();
+		List<String> liste = new ArrayList<>();
 		for (int i = 0; i < arraySize; i++) {
 			liste.add(getString(data, offset + (i * length), length));
 		}
@@ -55,7 +55,7 @@ public class BufferByteUtils {
 	}
 
 	public List<Float> getListFloat(byte[] data, int offset, int arraySize, int length) {
-		List<Float> liste = new ArrayList<Float>();
+		List<Float> liste = new ArrayList<>();
 		for (int i = 0; i < arraySize; i++) {
 			liste.add(getFloat(data, offset + (i * length), length));
 		}

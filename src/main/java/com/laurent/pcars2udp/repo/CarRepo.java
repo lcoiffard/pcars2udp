@@ -9,10 +9,10 @@ import com.laurent.pcars2udp.entity.Car;
 
 public interface CarRepo extends JpaRepository<Car, Long> {
 
-	public Car findByCarName(String carName);
+	 Car findByCarName(String carName);
 
-	public List<Car> findAllByOrderByCarName();
+	 List<Car> findAllByOrderByCarName();
 
 	@Query(value = "SELECT distinct className FROM Car order by className ")
-	public List<String> findAllClassByOrderByClassName();
+	 List<String> findAllClassByOrderByClassName();
 }

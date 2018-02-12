@@ -56,12 +56,12 @@ public class TimeLap implements Cloneable {
 		return getStringDiff(time, this.timeSectorThree);
 	}
 
-	public Boolean isBeaten(LocalDateTime time, LocalDateTime timeToBeat) {
+	private Boolean isBeaten(LocalDateTime time, LocalDateTime timeToBeat) {
 		return (time != null && timeToBeat == null)
 				|| (time != null && timeToBeat != null && time.isBefore(timeToBeat));
 	}
 
-	public String getStringDiff(LocalDateTime time, LocalDateTime timeToBeat) {
+	private String getStringDiff(LocalDateTime time, LocalDateTime timeToBeat) {
 		String diffString = null;
 		if (time != null && timeToBeat != null) {
 			Duration diff = Duration.between(timeToBeat, time);

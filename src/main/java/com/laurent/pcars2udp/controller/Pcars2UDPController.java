@@ -30,7 +30,7 @@ import com.laurent.pcars2udp.repo.TrackRepo;
 
 @Controller
 @SessionAttributes({ "carList", "classList", "trackList" })
-public class Pcars2UDPController {
+class Pcars2UDPController {
 
 	@Autowired
 	private ParticipantInfo participantInfo;
@@ -136,7 +136,7 @@ public class Pcars2UDPController {
 		return "pcars2udp :: data";
 	}
 
-	public void refreshTrackInProgress() {
+	private void refreshTrackInProgress() {
 
 		// if we are on track
 		if (telemetryData.getGameSessionState() != null && telemetryData.getGameSessionState() != 1

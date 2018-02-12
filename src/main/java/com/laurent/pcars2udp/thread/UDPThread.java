@@ -17,7 +17,7 @@ import com.laurent.pcars2udp.dto.TelemetryData;
 @Component
 public class UDPThread {
 
-	public final static int port = 5606;
+	private final static int port = 5606;
 
 	@Autowired
 	private ParticipantInfoAdapter participantInfoAdapter;
@@ -38,11 +38,13 @@ public class UDPThread {
 			// Création de la connexion côté serveur, en spécifiant un port d'écoute
 			DatagramSocket server = new DatagramSocket(port);
 
-			while (true) {
+			// On s'occupe maintenant de l'objet paquet
+			byte[] buffer = new byte[8192];
+			DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 
-				// On s'occupe maintenant de l'objet paquet
-				byte[] buffer = new byte[8192];
-				DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+			boolean readSocket = true;
+
+			while (readSocket) {
 
 				// Cette méthode permet de récupérer le datagramme envoyé par le client
 				// Elle bloque le thread jusqu'à ce que celui-ci ait reçu quelque chose.
@@ -67,10 +69,7 @@ public class UDPThread {
 
 			}
 
-		} catch (SocketException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

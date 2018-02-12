@@ -26,14 +26,14 @@ public class Application {
 	@Autowired
 	private UDPThread udpThread;
 
-	public static void main(String[] args) throws IOException, URISyntaxException {
+	public static void main(String[] args) throws IOException {
 		SpringApplication.run(Application.class, args);
 
 		Runtime.getRuntime().exec(new String[] { "sh", "-c", "/opt/google/chrome/chrome http://localhost:8080" });
 	}
 
 	@PostConstruct
-	public void init() throws InterruptedException {
+	public void init()  {
 		udpThread.run();
 
 	}

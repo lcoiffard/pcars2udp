@@ -8,8 +8,8 @@ import com.laurent.pcars2udp.entity.Track;
 
 public interface TrackRepo extends JpaRepository<Track, Long> {
 
-	public Track findByTrackLocationAndTrackVariation(String trackLocation, String trackVariation);
+	 Track findByTrackLocationAndTrackVariation(String trackLocation, String trackVariation);
 
-	public List<Track> findAllByOrderByTrackLocationAscTrackVariationAsc();
+	 List<Track> findAllByOrderByTrackLocationAscTrackVariationAsc();
 
 }

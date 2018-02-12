@@ -17,7 +17,7 @@ public class Track {
 	private Long id;
 	@Column(nullable = false)
 	private String trackLocation;
-	@Column(nullable = true)
+	@Column
 	private String trackVariation;
 
 	public Long getId() {

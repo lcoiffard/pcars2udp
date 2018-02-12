@@ -18,7 +18,7 @@ import com.laurent.pcars2udp.repo.LapRecordRepo;
 import com.laurent.pcars2udp.util.LogUtils;
 
 @Component
-public class SaveBestLapThread {
+class SaveBestLapThread {
 
 	@Autowired
 	private ParticipantInfo participantInfo;

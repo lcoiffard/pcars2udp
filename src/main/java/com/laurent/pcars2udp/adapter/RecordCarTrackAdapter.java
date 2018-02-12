@@ -30,7 +30,7 @@ public class RecordCarTrackAdapter {
 		recordCarTrack.setTrackVariation(lapRecord.getTrack().getTrackVariation());
 		recordCarTrack.setCarName(lapRecord.getCar().getCarName());
 		recordCarTrack.setCarClass(lapRecord.getCar().getClassName());
-		;
+
 		recordCarTrack.setRecordLap(lapRecord.getRecordLap());
 		recordCarTrack.setDateRecord(lapRecord.getRecordDate());
 		recordCarTrack.setRecordSectorOne(lapRecord.getRecordSectorOne());
