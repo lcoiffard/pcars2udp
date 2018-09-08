@@ -3,9 +3,10 @@ package com.laurent.pcars2udp.dto;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
+
+import lombok.Data;
 
 @Data
 public class TimeLap implements Cloneable {

@@ -1,7 +1,6 @@
 package com.laurent.pcars2udp;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import javax.annotation.PostConstruct;
 

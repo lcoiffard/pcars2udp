@@ -2,8 +2,9 @@ package com.laurent.pcars2udp.dto;
 
 import java.time.LocalDateTime;
 
-import lombok.Data;
 import org.springframework.stereotype.Component;
+
+import lombok.Data;
 
 @Component
 @Data
